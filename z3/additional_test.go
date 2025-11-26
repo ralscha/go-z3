@@ -474,7 +474,8 @@ func TestIsStringSort(t *testing.T) {
 func TestEmptySeq(t *testing.T) {
 	ctx := NewContext(nil)
 	intSort := ctx.IntSort()
-	empty := ctx.EmptySeq(intSort)
+	seqSort := ctx.SeqSort(intSort)
+	empty := ctx.EmptySeq(seqSort)
 
 	solver := NewSolver(ctx)
 	solver.Assert(empty.Length().Eq(ctx.FromInt(0, ctx.IntSort()).(Int)))
