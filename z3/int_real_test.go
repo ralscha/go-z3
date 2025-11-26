@@ -55,10 +55,11 @@ func TestIntRem(t *testing.T) {
 	result := x.Rem(y)
 
 	solver := NewSolver(ctx)
-	// Rem follows the sign of the dividend
-	solver.Assert(result.Eq(ctx.FromInt(-3, ctx.IntSort()).(Int)))
+	// Z3's Rem is based on floored division, not truncated division like Go's %.
+	// For floored division: -23 / 5 = -5, so -23 rem 5 = -23 - (-5 * 5) = 2
+	solver.Assert(result.Eq(ctx.FromInt(2, ctx.IntSort()).(Int)))
 	if sat, _ := solver.Check(); !sat {
-		t.Error("expected SAT for -23 rem 5 = -3")
+		t.Error("expected SAT for -23 rem 5 = 2")
 	}
 }
 
