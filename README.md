@@ -3,26 +3,56 @@ the [Z3 SMT solver](https://github.com/Z3Prover/z3).
 
 ## Installation
 
-First, follow the instructions to
-[download and install](https://github.com/Z3Prover/z3/blob/master/README.md) the Z3 C library.
+### Prerequisites
 
-go-z3 requires Z3 version 4.15.4 or later.
+- **Go 1.21 or later**
+- **Z3 4.15.4 or later** - Download from [Z3 Releases](https://github.com/Z3Prover/z3/releases)
+- **C compiler** - GCC or compatible (CGO is required)
 
-If you installed the C library to a non-default location (such as a
-directory under `$HOME`), set the following environment variables:
+### Linux / macOS
+
+1. Download and install the Z3 library. If you installed it to a non-default location, set the following environment variables:
 
 ```sh
+export Z3PREFIX=/path/to/z3
+
 # For building:
-export CGO_CFLAGS=-I$Z3PREFIX/include CGO_LDFLAGS=-L$Z3PREFIX/lib
+export CGO_CFLAGS="-I$Z3PREFIX/include"
+export CGO_LDFLAGS="-L$Z3PREFIX/lib -lz3"
+
 # For running binaries (including tests):
 export LD_LIBRARY_PATH=$Z3PREFIX/lib
 ```
 
-Then download and build go-z3:
+2. Install go-z3:
 
 ```sh
-go get -u github.com/ralscha/go-z3/z3
+go get github.com/ralscha/go-z3/z3
 ```
+
+### Windows
+
+1. Download the Z3 release for Windows and extract it.
+
+2. Install MinGW-w64 or another GCC distribution for Windows.
+
+3. Set the required environment variables (adjust paths as needed):
+
+```sh
+export CGO_ENABLED=1
+export CGO_CFLAGS="-I/path/to/z3/include"
+export CGO_LDFLAGS="-L/path/to/z3/bin -lz3"
+export PATH="/path/to/mingw64/bin:/path/to/z3/bin:$PATH"
+export CC="/path/to/mingw64/bin/gcc.exe"
+```
+
+4. Install go-z3:
+
+```sh
+go get github.com/ralscha/go-z3/z3
+```
+
+> **Note:** On Windows, the Z3 DLL (`libz3.dll`) must be in your PATH at runtime.
 
 ## Example
 

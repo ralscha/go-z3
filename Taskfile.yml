@@ -27,6 +27,11 @@ tasks:
     cmds:
       - go build ./...
 
+  fmt:
+    desc: Format all Go files
+    cmds:
+      - go fmt ./...
+
   default:
     desc: List available tasks
     cmds:
