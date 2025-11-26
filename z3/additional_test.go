@@ -223,7 +223,7 @@ func TestSortDomainAndRange(t *testing.T) {
 	arrSort := ctx.ArraySort(intSort, intSort)
 
 	domain, rng := arrSort.DomainAndRange()
-	if domain == nil || rng == nil {
+	if domain.Context() == nil || rng.Context() == nil {
 		t.Error("expected non-nil domain and range")
 	}
 }
@@ -259,10 +259,9 @@ func TestFreshFuncDecl(t *testing.T) {
 	x := ctx.FromInt(42, intSort)
 	result := f.Apply(x)
 
-	solver := NewSolver(ctx)
-	solver.Assert(result.Sort().Kind() == KindInt)
-	if sat, _ := solver.Check(); !sat {
-		t.Error("expected SAT for fresh func decl")
+	// Just check the result has the expected sort kind
+	if result.Sort().Kind() != KindInt {
+		t.Error("expected result to have KindInt")
 	}
 }
 
@@ -309,13 +308,22 @@ func TestSolverString(t *testing.T) {
 	}
 }
 
-func TestSolverError(t *testing.T) {
+func TestSolverScopesAdditional(t *testing.T) {
 	ctx := NewContext(nil)
 	solver := NewSolver(ctx)
 
-	err := solver.Error()
-	// Should be nil for valid solver
-	_ = err
+	// Check initial scopes
+	if solver.NumScopes() != 0 {
+		t.Error("expected 0 scopes initially")
+	}
+	solver.Push()
+	if solver.NumScopes() != 1 {
+		t.Error("expected 1 scope after push")
+	}
+	solver.Pop()
+	if solver.NumScopes() != 0 {
+		t.Error("expected 0 scopes after pop")
+	}
 }
 
 func TestExprContext(t *testing.T) {
@@ -329,10 +337,9 @@ func TestExprContext(t *testing.T) {
 }
 
 func TestContextConfig(t *testing.T) {
-	cfg := map[string]interface{}{
-		"timeout": 1000,
-	}
-	ctx := NewContextConfig(cfg)
+	cfg := NewContextConfig()
+	cfg.SetUint("timeout", 1000)
+	ctx := NewContext(cfg)
 	if ctx == nil {
 		t.Error("expected non-nil context with config")
 	}
@@ -347,9 +354,9 @@ func TestContextInterrupt(t *testing.T) {
 func TestContextExtra(t *testing.T) {
 	ctx := NewContext(nil)
 
-	// SetExtra and Extra
-	ctx.SetExtra(42)
-	val := ctx.Extra()
+	// SetExtra and Extra require a key and value
+	ctx.SetExtra("mykey", 42)
+	val := ctx.Extra("mykey")
 	if val != 42 {
 		t.Errorf("expected 42, got %v", val)
 	}
@@ -415,7 +422,7 @@ func TestStringLastIndexOf(t *testing.T) {
 	}
 }
 
-func TestStringConst(t *testing.T) {
+func TestStringConstAdditional(t *testing.T) {
 	ctx := NewContext(nil)
 	x := ctx.StringConst("x")
 
@@ -430,7 +437,7 @@ func TestStringNth(t *testing.T) {
 	ctx := NewContext(nil)
 	s := ctx.FromString("hello")
 	idx := ctx.FromInt(1, ctx.IntSort()).(Int)
-	ch := s.Nth(idx)
+	ch := s.Nth(idx).(Char)
 
 	solver := NewSolver(ctx)
 	// Nth returns a Char
@@ -445,11 +452,11 @@ func TestSeqSort(t *testing.T) {
 	intSort := ctx.IntSort()
 	seqSort := ctx.SeqSort(intSort)
 
-	if !ctx.IsSeqSort(seqSort) {
+	if !seqSort.IsSeqSort() {
 		t.Error("expected IsSeqSort to return true")
 	}
 
-	basis := ctx.SeqSortBasis(seqSort)
+	basis := seqSort.SeqSortBasis()
 	if basis.Kind() != KindInt {
 		t.Error("expected int basis")
 	}
@@ -459,7 +466,7 @@ func TestIsStringSort(t *testing.T) {
 	ctx := NewContext(nil)
 	strSort := ctx.StringSort()
 
-	if !ctx.IsStringSort(strSort) {
+	if !strSort.IsStringSort() {
 		t.Error("expected IsStringSort to return true")
 	}
 }
@@ -604,7 +611,7 @@ func TestIsRESort(t *testing.T) {
 	strSort := ctx.StringSort()
 	reSort := ctx.RESort(strSort)
 
-	if !ctx.IsRESort(reSort) {
+	if !reSort.IsRESort() {
 		t.Error("expected IsRESort to return true")
 	}
 }
@@ -614,7 +621,7 @@ func TestRESortBasis(t *testing.T) {
 	strSort := ctx.StringSort()
 	reSort := ctx.RESort(strSort)
 
-	basis := ctx.RESortBasis(reSort)
+	basis := reSort.RESortBasis()
 	if basis.Kind() != KindSeq {
 		t.Error("expected seq basis")
 	}
@@ -650,7 +657,7 @@ func TestIsCharSort(t *testing.T) {
 	ctx := NewContext(nil)
 	charSort := ctx.CharSort()
 
-	if !ctx.IsCharSort(charSort) {
+	if !charSort.IsCharSort() {
 		t.Error("expected IsCharSort to return true")
 	}
 }
@@ -758,30 +765,27 @@ func TestSimplifyConfig(t *testing.T) {
 }
 
 func TestConfigSetBool(t *testing.T) {
-	cfg := map[string]interface{}{
-		"proof": true,
-	}
-	ctx := NewContextConfig(cfg)
+	cfg := NewContextConfig()
+	cfg.SetBool("proof", true)
+	ctx := NewContext(cfg)
 	if ctx == nil {
 		t.Error("expected non-nil context")
 	}
 }
 
 func TestConfigSetUint(t *testing.T) {
-	cfg := map[string]interface{}{
-		"timeout": uint(1000),
-	}
-	ctx := NewContextConfig(cfg)
+	cfg := NewContextConfig()
+	cfg.SetUint("timeout", 1000)
+	ctx := NewContext(cfg)
 	if ctx == nil {
 		t.Error("expected non-nil context")
 	}
 }
 
 func TestConfigSetFloat(t *testing.T) {
-	cfg := map[string]interface{}{
-		"pp.decimal_precision": 10.0,
-	}
-	ctx := NewContextConfig(cfg)
+	cfg := NewContextConfig()
+	cfg.SetFloat("pp.decimal_precision", 10.0)
+	ctx := NewContext(cfg)
 	if ctx == nil {
 		t.Error("expected non-nil context")
 	}
