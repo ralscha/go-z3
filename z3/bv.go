@@ -7,6 +7,7 @@ package z3
 import (
 	"math"
 	"math/big"
+	"runtime"
 )
 
 /*
@@ -297,6 +298,10 @@ func (lit BV) AsUint64() (val uint64, isLiteral, ok bool) {
 //
 //wrap:expr Repeat l i:int : Z3_mk_repeat i:unsigned l
 
+// Bit2Bool extracts the bit at position i of l and yields a boolean.
+//
+//wrap:expr Bit2Bool:Bool l i:int : Z3_mk_bit2bool i:unsigned l
+
 // Lsh returns l shifted left by i bits.
 //
 // This is equivalent to l * 2^i.
@@ -362,4 +367,66 @@ func (lit BV) AsUint64() (val uint64, isLiteral, ok bool) {
 //
 //wrap:expr UToFloat:Float l s:Sort : Z3_mk_fpa_to_fp_unsigned @rm l s
 
-// TODO: Z3_mk_bv*_no_{over,under}flow
+// AddNoOverflow returns a predicate that is true if the addition
+// of l and r does not overflow.
+// If isSigned is true, checks for signed overflow; otherwise unsigned.
+func (l BV) AddNoOverflow(r BV, isSigned bool) Bool {
+	ctx := l.ctx
+	val := wrapValue(ctx, func() C.Z3_ast {
+		return C.Z3_mk_bvadd_no_overflow(ctx.c, l.c, r.c, boolToZ3(isSigned))
+	})
+	runtime.KeepAlive(l)
+	runtime.KeepAlive(r)
+	return Bool(val)
+}
+
+// AddNoUnderflow returns a predicate that is true if the signed
+// addition of l and r does not underflow.
+//
+//wrap:expr AddNoUnderflow:Bool Z3_mk_bvadd_no_underflow l r
+
+// SubNoOverflow returns a predicate that is true if the signed
+// subtraction of l and r does not overflow.
+//
+//wrap:expr SubNoOverflow:Bool Z3_mk_bvsub_no_overflow l r
+
+// SubNoUnderflow returns a predicate that is true if the subtraction
+// of l and r does not underflow.
+// If isSigned is true, checks for signed underflow; otherwise unsigned.
+func (l BV) SubNoUnderflow(r BV, isSigned bool) Bool {
+	ctx := l.ctx
+	val := wrapValue(ctx, func() C.Z3_ast {
+		return C.Z3_mk_bvsub_no_underflow(ctx.c, l.c, r.c, boolToZ3(isSigned))
+	})
+	runtime.KeepAlive(l)
+	runtime.KeepAlive(r)
+	return Bool(val)
+}
+
+// MulNoOverflow returns a predicate that is true if the multiplication
+// of l and r does not overflow.
+// If isSigned is true, checks for signed overflow; otherwise unsigned.
+func (l BV) MulNoOverflow(r BV, isSigned bool) Bool {
+	ctx := l.ctx
+	val := wrapValue(ctx, func() C.Z3_ast {
+		return C.Z3_mk_bvmul_no_overflow(ctx.c, l.c, r.c, boolToZ3(isSigned))
+	})
+	runtime.KeepAlive(l)
+	runtime.KeepAlive(r)
+	return Bool(val)
+}
+
+// MulNoUnderflow returns a predicate that is true if the signed
+// multiplication of l and r does not underflow.
+//
+//wrap:expr MulNoUnderflow:Bool Z3_mk_bvmul_no_underflow l r
+
+// SDivNoOverflow returns a predicate that is true if the signed
+// division of l and r does not overflow.
+//
+//wrap:expr SDivNoOverflow:Bool Z3_mk_bvsdiv_no_overflow l r
+
+// NegNoOverflow returns a predicate that is true if the negation
+// of l does not overflow (when l is interpreted as signed).
+//
+//wrap:expr NegNoOverflow:Bool Z3_mk_bvneg_no_overflow l

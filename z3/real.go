@@ -146,3 +146,7 @@ func (lit Real) Approx(precision int) (lower, upper Real, isLiteralIrrational bo
 // rounding mode.
 //
 //wrap:expr ToFloatExp:Float l exp:Int s:Sort : Z3_mk_fpa_to_fp_int_real @rm exp l s
+
+// Abs returns the absolute value of l.
+//
+//wrap:expr Abs Z3_mk_abs l

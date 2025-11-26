@@ -28,8 +28,9 @@ func (l Float) NE(r Float) Bool {
 }
 
 // Abs returns the absolute value of l.
+//
 func (l Float) Abs() Float {
-	// Generated from float.go:499.
+	// Generated from float.go:491.
 	ctx := l.ctx
 	val := wrapValue(ctx, func() C.Z3_ast {
 		return C.Z3_mk_fpa_abs(ctx.c, l.c)
@@ -39,8 +40,9 @@ func (l Float) Abs() Float {
 }
 
 // Neg returns -l.
+//
 func (l Float) Neg() Float {
-	// Generated from float.go:503.
+	// Generated from float.go:495.
 	ctx := l.ctx
 	val := wrapValue(ctx, func() C.Z3_ast {
 		return C.Z3_mk_fpa_neg(ctx.c, l.c)
@@ -52,8 +54,9 @@ func (l Float) Neg() Float {
 // Add returns l+r.
 //
 // Add uses the current rounding mode.
+//
 func (l Float) Add(r Float) Float {
-	// Generated from float.go:509.
+	// Generated from float.go:501.
 	ctx := l.ctx
 	rm := ctx.rm()
 	val := wrapValue(ctx, func() C.Z3_ast {
@@ -67,8 +70,9 @@ func (l Float) Add(r Float) Float {
 // Sub returns l-r.
 //
 // Sub uses the current rounding mode.
+//
 func (l Float) Sub(r Float) Float {
-	// Generated from float.go:515.
+	// Generated from float.go:507.
 	ctx := l.ctx
 	rm := ctx.rm()
 	val := wrapValue(ctx, func() C.Z3_ast {
@@ -82,8 +86,9 @@ func (l Float) Sub(r Float) Float {
 // Mul returns l*r.
 //
 // Mul uses the current rounding mode.
+//
 func (l Float) Mul(r Float) Float {
-	// Generated from float.go:521.
+	// Generated from float.go:513.
 	ctx := l.ctx
 	rm := ctx.rm()
 	val := wrapValue(ctx, func() C.Z3_ast {
@@ -97,8 +102,9 @@ func (l Float) Mul(r Float) Float {
 // Div returns l/r.
 //
 // Div uses the current rounding mode.
+//
 func (l Float) Div(r Float) Float {
-	// Generated from float.go:527.
+	// Generated from float.go:519.
 	ctx := l.ctx
 	rm := ctx.rm()
 	val := wrapValue(ctx, func() C.Z3_ast {
@@ -113,8 +119,9 @@ func (l Float) Div(r Float) Float {
 //
 // MulAdd uses the current rounding mode on the result of the whole
 // operation.
+//
 func (l Float) MulAdd(r Float, a Float) Float {
-	// Generated from float.go:534.
+	// Generated from float.go:526.
 	ctx := l.ctx
 	rm := ctx.rm()
 	val := wrapValue(ctx, func() C.Z3_ast {
@@ -129,8 +136,9 @@ func (l Float) MulAdd(r Float, a Float) Float {
 // Sqrt returns the square root of l.
 //
 // Sqrt uses the current rounding mode.
+//
 func (l Float) Sqrt() Float {
-	// Generated from float.go:540.
+	// Generated from float.go:532.
 	ctx := l.ctx
 	rm := ctx.rm()
 	val := wrapValue(ctx, func() C.Z3_ast {
@@ -141,8 +149,9 @@ func (l Float) Sqrt() Float {
 }
 
 // Rem returns the remainder of l/r.
+//
 func (l Float) Rem(r Float) Float {
-	// Generated from float.go:544.
+	// Generated from float.go:536.
 	ctx := l.ctx
 	val := wrapValue(ctx, func() C.Z3_ast {
 		return C.Z3_mk_fpa_rem(ctx.c, l.c, r.c)
@@ -154,8 +163,9 @@ func (l Float) Rem(r Float) Float {
 
 // Round rounds l to an integral floating-point value according to
 // rounding mode rm.
+//
 func (l Float) Round(rm RoundingMode) Float {
-	// Generated from float.go:549.
+	// Generated from float.go:541.
 	ctx := l.ctx
 	rmc := rm.ast(ctx)
 	val := wrapValue(ctx, func() C.Z3_ast {
@@ -167,8 +177,9 @@ func (l Float) Round(rm RoundingMode) Float {
 }
 
 // Min returns the minimum of l and r.
+//
 func (l Float) Min(r Float) Float {
-	// Generated from float.go:553.
+	// Generated from float.go:545.
 	ctx := l.ctx
 	val := wrapValue(ctx, func() C.Z3_ast {
 		return C.Z3_mk_fpa_min(ctx.c, l.c, r.c)
@@ -179,8 +190,9 @@ func (l Float) Min(r Float) Float {
 }
 
 // Max returns the maximum of l and r.
+//
 func (l Float) Max(r Float) Float {
-	// Generated from float.go:557.
+	// Generated from float.go:549.
 	ctx := l.ctx
 	val := wrapValue(ctx, func() C.Z3_ast {
 		return C.Z3_mk_fpa_max(ctx.c, l.c, r.c)
@@ -195,8 +207,9 @@ func (l Float) Max(r Float) Float {
 // This differs from Eq, which is true if l and r are identical. In
 // contrast, under IEEE equality, ±0 == ±0, while NaN != NaN and ±inf
 // != ±inf.
+//
 func (l Float) IEEEEq(r Float) Bool {
-	// Generated from float.go:565.
+	// Generated from float.go:557.
 	ctx := l.ctx
 	val := wrapValue(ctx, func() C.Z3_ast {
 		return C.Z3_mk_fpa_eq(ctx.c, l.c, r.c)
@@ -207,8 +220,9 @@ func (l Float) IEEEEq(r Float) Bool {
 }
 
 // LT returns l < r.
+//
 func (l Float) LT(r Float) Bool {
-	// Generated from float.go:569.
+	// Generated from float.go:561.
 	ctx := l.ctx
 	val := wrapValue(ctx, func() C.Z3_ast {
 		return C.Z3_mk_fpa_lt(ctx.c, l.c, r.c)
@@ -219,8 +233,9 @@ func (l Float) LT(r Float) Bool {
 }
 
 // LE returns l <= r.
+//
 func (l Float) LE(r Float) Bool {
-	// Generated from float.go:573.
+	// Generated from float.go:565.
 	ctx := l.ctx
 	val := wrapValue(ctx, func() C.Z3_ast {
 		return C.Z3_mk_fpa_leq(ctx.c, l.c, r.c)
@@ -231,8 +246,9 @@ func (l Float) LE(r Float) Bool {
 }
 
 // GT returns l > r.
+//
 func (l Float) GT(r Float) Bool {
-	// Generated from float.go:577.
+	// Generated from float.go:569.
 	ctx := l.ctx
 	val := wrapValue(ctx, func() C.Z3_ast {
 		return C.Z3_mk_fpa_gt(ctx.c, l.c, r.c)
@@ -243,8 +259,9 @@ func (l Float) GT(r Float) Bool {
 }
 
 // GE returns l >= r.
+//
 func (l Float) GE(r Float) Bool {
-	// Generated from float.go:581.
+	// Generated from float.go:573.
 	ctx := l.ctx
 	val := wrapValue(ctx, func() C.Z3_ast {
 		return C.Z3_mk_fpa_geq(ctx.c, l.c, r.c)
@@ -255,8 +272,9 @@ func (l Float) GE(r Float) Bool {
 }
 
 // IsNormal returns true if l is a normal floating-point number.
+//
 func (l Float) IsNormal() Bool {
-	// Generated from float.go:585.
+	// Generated from float.go:577.
 	ctx := l.ctx
 	val := wrapValue(ctx, func() C.Z3_ast {
 		return C.Z3_mk_fpa_is_normal(ctx.c, l.c)
@@ -266,8 +284,9 @@ func (l Float) IsNormal() Bool {
 }
 
 // IsSubnormal returns true if l is a subnormal floating-point number.
+//
 func (l Float) IsSubnormal() Bool {
-	// Generated from float.go:589.
+	// Generated from float.go:581.
 	ctx := l.ctx
 	val := wrapValue(ctx, func() C.Z3_ast {
 		return C.Z3_mk_fpa_is_subnormal(ctx.c, l.c)
@@ -277,8 +296,9 @@ func (l Float) IsSubnormal() Bool {
 }
 
 // IsZero returns true if l is ±0.
+//
 func (l Float) IsZero() Bool {
-	// Generated from float.go:593.
+	// Generated from float.go:585.
 	ctx := l.ctx
 	val := wrapValue(ctx, func() C.Z3_ast {
 		return C.Z3_mk_fpa_is_zero(ctx.c, l.c)
@@ -288,8 +308,9 @@ func (l Float) IsZero() Bool {
 }
 
 // IsInfinite returns true if l is ±∞.
+//
 func (l Float) IsInfinite() Bool {
-	// Generated from float.go:597.
+	// Generated from float.go:589.
 	ctx := l.ctx
 	val := wrapValue(ctx, func() C.Z3_ast {
 		return C.Z3_mk_fpa_is_infinite(ctx.c, l.c)
@@ -299,8 +320,9 @@ func (l Float) IsInfinite() Bool {
 }
 
 // IsNaN returns true if l is NaN.
+//
 func (l Float) IsNaN() Bool {
-	// Generated from float.go:601.
+	// Generated from float.go:593.
 	ctx := l.ctx
 	val := wrapValue(ctx, func() C.Z3_ast {
 		return C.Z3_mk_fpa_is_nan(ctx.c, l.c)
@@ -310,8 +332,9 @@ func (l Float) IsNaN() Bool {
 }
 
 // IsNegative returns true if l is negative.
+//
 func (l Float) IsNegative() Bool {
-	// Generated from float.go:605.
+	// Generated from float.go:597.
 	ctx := l.ctx
 	val := wrapValue(ctx, func() C.Z3_ast {
 		return C.Z3_mk_fpa_is_negative(ctx.c, l.c)
@@ -321,8 +344,9 @@ func (l Float) IsNegative() Bool {
 }
 
 // IsPositive returns true if l is positive.
+//
 func (l Float) IsPositive() Bool {
-	// Generated from float.go:609.
+	// Generated from float.go:601.
 	ctx := l.ctx
 	val := wrapValue(ctx, func() C.Z3_ast {
 		return C.Z3_mk_fpa_is_positive(ctx.c, l.c)
@@ -336,8 +360,9 @@ func (l Float) IsPositive() Bool {
 //
 // If necessary, the result will be rounded according to the current
 // rounding mode.
+//
 func (l Float) ToFloat(s Sort) Float {
-	// Generated from float.go:617.
+	// Generated from float.go:609.
 	ctx := l.ctx
 	rm := ctx.rm()
 	val := wrapValue(ctx, func() C.Z3_ast {
@@ -353,8 +378,9 @@ func (l Float) ToFloat(s Sort) Float {
 // l is first rounded to an integer using the current rounding mode.
 // If the result is not in the range [0, 2^bits-1], the result is
 // unspecified.
+//
 func (l Float) ToUBV(bits int) BV {
-	// Generated from float.go:625.
+	// Generated from float.go:617.
 	ctx := l.ctx
 	rm := ctx.rm()
 	val := wrapValue(ctx, func() C.Z3_ast {
@@ -369,8 +395,9 @@ func (l Float) ToUBV(bits int) BV {
 // l is first rounded to an integer using the current rounding mode.
 // If the result is not in the range [-2^(bits-1), 2^(bits-1)-1], the
 // result is unspecified.
+//
 func (l Float) ToSBV(bits int) BV {
-	// Generated from float.go:633.
+	// Generated from float.go:625.
 	ctx := l.ctx
 	rm := ctx.rm()
 	val := wrapValue(ctx, func() C.Z3_ast {
@@ -383,8 +410,9 @@ func (l Float) ToSBV(bits int) BV {
 // ToReal converts l into a real number.
 //
 // If l is ±inf, or NaN, the result is unspecified.
+//
 func (l Float) ToReal() Real {
-	// Generated from float.go:639.
+	// Generated from float.go:631.
 	ctx := l.ctx
 	val := wrapValue(ctx, func() C.Z3_ast {
 		return C.Z3_mk_fpa_to_real(ctx.c, l.c)
@@ -397,8 +425,9 @@ func (l Float) ToReal() Real {
 //
 // Note that NaN has many possible representations. This conversion
 // always uses the same representation.
+//
 func (l Float) ToIEEEBV() BV {
-	// Generated from float.go:646.
+	// Generated from float.go:638.
 	ctx := l.ctx
 	val := wrapValue(ctx, func() C.Z3_ast {
 		return C.Z3_mk_fpa_to_ieee_bv(ctx.c, l.c)

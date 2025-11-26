@@ -76,3 +76,37 @@ func (ctx *Context) ConstArray(domain Sort, value Value) Array {
 // This is useful for extracting array values interpreted by models.
 //
 //wrap:expr Default:Value x : Z3_mk_array_default x
+
+// Ext returns an index at which arrays x and y differ.
+// If x and y are equal, the result is unconstrained.
+//
+//wrap:expr Ext:Value x y:Array : Z3_mk_array_ext x y
+
+// Map applies function f element-wise to the given arrays.
+// All arrays must have the same domain sort.
+// f must take len(arrays) arguments of the range sorts of the arrays
+// and return a value of some sort.
+// The result is an array with the same domain as the input arrays
+// and range equal to the return type of f.
+func (ctx *Context) ArrayMap(f FuncDecl, arrays ...Array) Array {
+	cargs := make([]C.Z3_ast, len(arrays))
+	for i, arr := range arrays {
+		cargs[i] = arr.c
+	}
+	res := Array(wrapValue(ctx, func() C.Z3_ast {
+		return C.Z3_mk_map(ctx.c, f.c, C.uint(len(cargs)), &cargs[0])
+	}))
+	runtime.KeepAlive(f)
+	runtime.KeepAlive(&cargs[0])
+	return res
+}
+
+// AsArray creates an array value that behaves as the function graph of f.
+// The array satisfies the property (f x) = (select (as-array f) x).
+func (ctx *Context) AsArray(f FuncDecl) Array {
+	res := Array(wrapValue(ctx, func() C.Z3_ast {
+		return C.Z3_mk_as_array(ctx.c, f.c)
+	}))
+	runtime.KeepAlive(f)
+	return res
+}

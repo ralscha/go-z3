@@ -133,3 +133,98 @@ func (s *Solver) String() string {
 	runtime.KeepAlive(s)
 	return res
 }
+
+// NumScopes returns the number of backtracking points (Push calls
+// without matching Pop calls).
+func (s *Solver) NumScopes() uint {
+	var res C.uint
+	s.ctx.do(func() {
+		res = C.Z3_solver_get_num_scopes(s.ctx.c, s.c)
+	})
+	runtime.KeepAlive(s)
+	return uint(res)
+}
+
+// NumAssertions returns the number of assertions in the solver.
+func (s *Solver) NumAssertions() uint {
+	var res uint
+	s.ctx.do(func() {
+		vec := C.Z3_solver_get_assertions(s.ctx.c, s.c)
+		res = uint(C.Z3_ast_vector_size(s.ctx.c, vec))
+	})
+	runtime.KeepAlive(s)
+	return res
+}
+
+// Assertions returns the assertions in the solver.
+func (s *Solver) Assertions() []Bool {
+	var asts []C.Z3_ast
+	s.ctx.do(func() {
+		vec := C.Z3_solver_get_assertions(s.ctx.c, s.c)
+		C.Z3_ast_vector_inc_ref(s.ctx.c, vec)
+		defer C.Z3_ast_vector_dec_ref(s.ctx.c, vec)
+		size := int(C.Z3_ast_vector_size(s.ctx.c, vec))
+		asts = make([]C.Z3_ast, size)
+		for i := 0; i < size; i++ {
+			asts[i] = C.Z3_ast_vector_get(s.ctx.c, vec, C.uint(i))
+		}
+	})
+	result := make([]Bool, len(asts))
+	for i, ast := range asts {
+		a := ast // capture for closure
+		result[i] = Bool(wrapValue(s.ctx, func() C.Z3_ast { return a }))
+	}
+	runtime.KeepAlive(s)
+	return result
+}
+
+// CheckAssumptions determines whether the predicates in Solver s
+// together with the given assumptions are satisfiable or unsatisfiable.
+// If Z3 is unable to determine satisfiability, it returns an *ErrSatUnknown error.
+func (s *Solver) CheckAssumptions(assumptions ...Bool) (sat bool, err error) {
+	cargs := make([]C.Z3_ast, len(assumptions))
+	for i, arg := range assumptions {
+		cargs[i] = arg.c
+	}
+	var res C.Z3_lbool
+	s.ctx.do(func() {
+		var cap *C.Z3_ast
+		if len(cargs) > 0 {
+			cap = &cargs[0]
+		}
+		res = C.Z3_solver_check_assumptions(s.ctx.c, s.c, C.uint(len(cargs)), cap)
+	})
+	if res == C.Z3_L_UNDEF {
+		// Get the reason.
+		s.ctx.do(func() {
+			cerr := C.Z3_solver_get_reason_unknown(s.ctx.c, s.c)
+			err = &ErrSatUnknown{C.GoString(cerr)}
+		})
+	}
+	runtime.KeepAlive(s)
+	runtime.KeepAlive(&cargs[0])
+	return res == C.Z3_L_TRUE, err
+}
+
+// UnsatCore returns the subset of assumptions that were used in the
+// unsatisfiability proof after a CheckAssumptions call that returned false.
+func (s *Solver) UnsatCore() []Bool {
+	var asts []C.Z3_ast
+	s.ctx.do(func() {
+		vec := C.Z3_solver_get_unsat_core(s.ctx.c, s.c)
+		C.Z3_ast_vector_inc_ref(s.ctx.c, vec)
+		defer C.Z3_ast_vector_dec_ref(s.ctx.c, vec)
+		size := int(C.Z3_ast_vector_size(s.ctx.c, vec))
+		asts = make([]C.Z3_ast, size)
+		for i := 0; i < size; i++ {
+			asts[i] = C.Z3_ast_vector_get(s.ctx.c, vec, C.uint(i))
+		}
+	})
+	result := make([]Bool, len(asts))
+	for i, ast := range asts {
+		a := ast // capture for closure
+		result[i] = Bool(wrapValue(s.ctx, func() C.Z3_ast { return a }))
+	}
+	runtime.KeepAlive(s)
+	return result
+}

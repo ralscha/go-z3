@@ -89,3 +89,13 @@ func (lit Int) AsBigInt() (val *big.Int, isConst bool) {
 // ToBV converts l to a bit-vector of width bits.
 //
 //wrap:expr ToBV:BV l bits:int : Z3_mk_int2bv bits:unsigned l
+
+// Abs returns the absolute value of l.
+//
+//wrap:expr Abs Z3_mk_abs l
+
+// Divides returns true if l divides r.
+// For the predicate to be part of linear integer arithmetic,
+// l must be a non-zero integer literal.
+//
+//wrap:expr Divides:Bool Z3_mk_divides l r

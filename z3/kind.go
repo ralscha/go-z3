@@ -29,6 +29,10 @@ const (
 	KindFiniteDomain  = Kind(C.Z3_FINITE_DOMAIN_SORT)
 	KindFloatingPoint = Kind(C.Z3_FLOATING_POINT_SORT)
 	KindRoundingMode  = Kind(C.Z3_ROUNDING_MODE_SORT)
+	KindSeq           = Kind(C.Z3_SEQ_SORT)
+	KindRE            = Kind(C.Z3_RE_SORT)
+	KindChar          = Kind(C.Z3_CHAR_SORT)
+	KindTypeVar       = Kind(C.Z3_TYPE_VAR)
 	KindUnknown       = Kind(C.Z3_UNKNOWN_SORT)
 )
 
@@ -57,6 +61,14 @@ func (k Kind) String() string {
 		return "KindFloatingPoint"
 	case KindRoundingMode:
 		return "KindRoundingMode"
+	case KindSeq:
+		return "KindSeq"
+	case KindRE:
+		return "KindRE"
+	case KindChar:
+		return "KindChar"
+	case KindTypeVar:
+		return "KindTypeVar"
 	case KindUnknown:
 		return "KindUnknown"
 	}

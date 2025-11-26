@@ -33,6 +33,7 @@ func (l Int) NE(r Int) Bool {
 //
 // Note that this differs from Go division: Go rounds toward zero
 // (truncated division), whereas this rounds toward -inf.
+//
 func (l Int) Div(r Int) Int {
 	// Generated from int.go:68.
 	ctx := l.ctx
@@ -47,6 +48,7 @@ func (l Int) Div(r Int) Int {
 // Mod returns modulus of l / r.
 //
 // The sign of the result follows the sign of r.
+//
 func (l Int) Mod(r Int) Int {
 	// Generated from int.go:74.
 	ctx := l.ctx
@@ -64,6 +66,7 @@ func (l Int) Mod(r Int) Int {
 //
 // Note that this differs subtly from Go's remainder operator because
 // this is based floored division rather than truncated division.
+//
 func (l Int) Rem(r Int) Int {
 	// Generated from int.go:83.
 	ctx := l.ctx
@@ -76,6 +79,7 @@ func (l Int) Rem(r Int) Int {
 }
 
 // ToReal converts l to sort Real.
+//
 func (l Int) ToReal() Real {
 	// Generated from int.go:87.
 	ctx := l.ctx
@@ -87,6 +91,7 @@ func (l Int) ToReal() Real {
 }
 
 // ToBV converts l to a bit-vector of width bits.
+//
 func (l Int) ToBV(bits int) BV {
 	// Generated from int.go:91.
 	ctx := l.ctx
@@ -97,7 +102,35 @@ func (l Int) ToBV(bits int) BV {
 	return BV(val)
 }
 
+// Abs returns the absolute value of l.
+//
+func (l Int) Abs() Int {
+	// Generated from int.go:95.
+	ctx := l.ctx
+	val := wrapValue(ctx, func() C.Z3_ast {
+		return C.Z3_mk_abs(ctx.c, l.c)
+	})
+	runtime.KeepAlive(l)
+	return Int(val)
+}
+
+// Divides returns true if l divides r.
+// For the predicate to be part of linear integer arithmetic,
+// l must be a non-zero integer literal.
+//
+func (l Int) Divides(r Int) Bool {
+	// Generated from int.go:101.
+	ctx := l.ctx
+	val := wrapValue(ctx, func() C.Z3_ast {
+		return C.Z3_mk_divides(ctx.c, l.c, r.c)
+	})
+	runtime.KeepAlive(l)
+	runtime.KeepAlive(r)
+	return Bool(val)
+}
+
 // Add returns the sum l + r[0] + r[1] + ...
+//
 func (l Int) Add(r ...Int) Int {
 	// Generated from intreal.go:12.
 	ctx := l.ctx
@@ -114,6 +147,7 @@ func (l Int) Add(r ...Int) Int {
 }
 
 // Mul returns the product l * r[0] * r[1] * ...
+//
 func (l Int) Mul(r ...Int) Int {
 	// Generated from intreal.go:16.
 	ctx := l.ctx
@@ -130,6 +164,7 @@ func (l Int) Mul(r ...Int) Int {
 }
 
 // Sub returns l - r[0] - r[1] - ...
+//
 func (l Int) Sub(r ...Int) Int {
 	// Generated from intreal.go:20.
 	ctx := l.ctx
@@ -146,6 +181,7 @@ func (l Int) Sub(r ...Int) Int {
 }
 
 // Neg returns -l.
+//
 func (l Int) Neg() Int {
 	// Generated from intreal.go:24.
 	ctx := l.ctx
@@ -157,6 +193,7 @@ func (l Int) Neg() Int {
 }
 
 // Exp returns lᶠ.
+//
 func (l Int) Exp(r Int) Int {
 	// Generated from intreal.go:28.
 	ctx := l.ctx
@@ -169,6 +206,7 @@ func (l Int) Exp(r Int) Int {
 }
 
 // LT returns l < r.
+//
 func (l Int) LT(r Int) Bool {
 	// Generated from intreal.go:32.
 	ctx := l.ctx
@@ -181,6 +219,7 @@ func (l Int) LT(r Int) Bool {
 }
 
 // LE returns l <= r.
+//
 func (l Int) LE(r Int) Bool {
 	// Generated from intreal.go:36.
 	ctx := l.ctx
@@ -193,6 +232,7 @@ func (l Int) LE(r Int) Bool {
 }
 
 // GT returns l > r.
+//
 func (l Int) GT(r Int) Bool {
 	// Generated from intreal.go:40.
 	ctx := l.ctx
@@ -205,6 +245,7 @@ func (l Int) GT(r Int) Bool {
 }
 
 // GE returns l >= r.
+//
 func (l Int) GE(r Int) Bool {
 	// Generated from intreal.go:44.
 	ctx := l.ctx
