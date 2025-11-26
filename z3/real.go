@@ -43,7 +43,11 @@ func (ctx *Context) RealConst(name string) Real {
 }
 
 // FromBigRat returns a real literal whose value is val.
+// If val is nil, it returns zero.
 func (ctx *Context) FromBigRat(val *big.Rat) Real {
+	if val == nil {
+		val = new(big.Rat)
+	}
 	cstr := C.CString(val.String())
 	defer C.free(unsafe.Pointer(cstr))
 	sort := ctx.RealSort()
