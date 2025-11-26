@@ -1,3 +1,3 @@
-module github.com/aclements/go-z3
+module github.com/ralscha/go-z3
 
 go 1.25.4

@@ -20,11 +20,11 @@ func TestRabbitsAndPheasants(t *testing.T) {
 	rabbits := ctx.IntConst("rabbits")
 	pheasants := ctx.IntConst("pheasants")
 
-	zero := ctx.FromInt(0, ctx.IntSort()).(Int)
-	nine := ctx.FromInt(9, ctx.IntSort()).(Int)
-	twentyFour := ctx.FromInt(24, ctx.IntSort()).(Int)
-	two := ctx.FromInt(2, ctx.IntSort()).(Int)
-	four := ctx.FromInt(4, ctx.IntSort()).(Int)
+	zero := ctx.Int(0)
+	nine := ctx.Int(9)
+	twentyFour := ctx.Int(24)
+	two := ctx.Int(2)
+	four := ctx.Int(4)
 
 	// Total animals: rabbits + pheasants == 9
 	solver.Assert(rabbits.Add(pheasants).Eq(nine))
@@ -74,12 +74,12 @@ func TestRabbitsAndPheasantsWithOr(t *testing.T) {
 	rabbits := ctx.IntConst("rabbits")
 	pheasants := ctx.IntConst("pheasants")
 
-	zero := ctx.FromInt(0, ctx.IntSort()).(Int)
-	nine := ctx.FromInt(9, ctx.IntSort()).(Int)
-	twentyFour := ctx.FromInt(24, ctx.IntSort()).(Int)
-	twentySeven := ctx.FromInt(27, ctx.IntSort()).(Int)
-	two := ctx.FromInt(2, ctx.IntSort()).(Int)
-	four := ctx.FromInt(4, ctx.IntSort()).(Int)
+	zero := ctx.Int(0)
+	nine := ctx.Int(9)
+	twentyFour := ctx.Int(24)
+	twentySeven := ctx.Int(27)
+	two := ctx.Int(2)
+	four := ctx.Int(4)
 
 	// Total animals: rabbits + pheasants == 9
 	solver.Assert(rabbits.Add(pheasants).Eq(nine))
@@ -148,14 +148,14 @@ func TestXKCD287(t *testing.T) {
 	for i := range appetizers {
 		quantities[i] = ctx.IntConst(appetizers[i])
 		// Quantities must be between 0 and 10
-		solver.Assert(quantities[i].GE(ctx.FromInt(0, ctx.IntSort()).(Int)))
-		solver.Assert(quantities[i].LE(ctx.FromInt(10, ctx.IntSort()).(Int)))
+		solver.Assert(quantities[i].GE(ctx.Int(0)))
+		solver.Assert(quantities[i].LE(ctx.Int(10)))
 	}
 
 	// Sum of (quantity * price) must equal total
 	var sumTerms []Int
 	for i, price := range prices {
-		priceVal := ctx.FromInt(price, ctx.IntSort()).(Int)
+		priceVal := ctx.Int(price)
 		sumTerms = append(sumTerms, quantities[i].Mul(priceVal))
 	}
 
@@ -164,7 +164,7 @@ func TestXKCD287(t *testing.T) {
 	for i := 1; i < len(sumTerms); i++ {
 		totalSum = totalSum.Add(sumTerms[i])
 	}
-	solver.Assert(totalSum.Eq(ctx.FromInt(total, ctx.IntSort()).(Int)))
+	solver.Assert(totalSum.Eq(ctx.Int(total)))
 
 	// Find all solutions
 	solutions := 0
@@ -191,7 +191,7 @@ func TestXKCD287(t *testing.T) {
 				t.Logf("  %d x %s = $%.2f", qtyVal, name, float64(qtyVal)*float64(prices[i])/100.0)
 			}
 			// Add constraint to exclude this solution
-			blocking = append(blocking, quantities[i].NE(ctx.FromInt(qtyVal, ctx.IntSort()).(Int)))
+			blocking = append(blocking, quantities[i].NE(ctx.Int(qtyVal)))
 		}
 
 		// Add constraint to find different solutions
@@ -280,14 +280,14 @@ func TestEinsteinRiddle(t *testing.T) {
 
 	allGroups := [][]Int{nationalities, cigarettes, animals, drinks, colors}
 
-	one := ctx.FromInt(1, ctx.IntSort()).(Int)
-	three := ctx.FromInt(3, ctx.IntSort()).(Int)
-	five := ctx.FromInt(5, ctx.IntSort()).(Int)
+	one := ctx.Int(1)
+	three := ctx.Int(3)
+	five := ctx.Int(5)
 
 	// Helper function: neighbor constraint (|a - b| == 1)
 	neighbor := func(a, b Int) Bool {
 		diff := a.Sub(b)
-		return diff.Eq(one).Or(diff.Eq(ctx.FromInt(-1, ctx.IntSort()).(Int)))
+		return diff.Eq(one).Or(diff.Eq(ctx.Int(-1)))
 	}
 
 	// Constraints: Each category has distinct values 1-5
@@ -387,8 +387,8 @@ func TestSkisAssignment(t *testing.T) {
 	skiSizes := []int64{1, 2, 5, 7, 13, 21}
 	skierHeights := []int64{3, 4, 7, 11, 18}
 
-	zero := ctx.FromInt(0, ctx.IntSort()).(Int)
-	numSkis := ctx.FromInt(int64(len(skiSizes)), ctx.IntSort()).(Int)
+	zero := ctx.Int(0)
+	numSkis := ctx.Int(int64(len(skiSizes)))
 
 	// Create assignment variables: assignments[i] = ski index for skier i
 	assignments := make([]Int, len(skierHeights))
@@ -422,8 +422,8 @@ func TestSkisAssignment(t *testing.T) {
 			if diff < 0 {
 				diff = -diff
 			}
-			diffVal := ctx.FromInt(diff, ctx.IntSort()).(Int)
-			jVal := ctx.FromInt(int64(j), ctx.IntSort()).(Int)
+			diffVal := ctx.Int(diff)
+			jVal := ctx.Int(int64(j))
 			// If assignment == j, then disparity == |diff|
 			opt.Assert(assignments[i].Eq(jVal).Implies(disparity.Eq(diffVal)))
 		}
@@ -491,15 +491,15 @@ func TestOrganizeYourDay(t *testing.T) {
 		&shoppingStart: "shopping",
 	}
 
-	nine := ctx.FromInt(9, ctx.IntSort()).(Int)
-	eleven := ctx.FromInt(11, ctx.IntSort()).(Int)
-	seventeen := ctx.FromInt(17, ctx.IntSort()).(Int)
+	nine := ctx.Int(9)
+	eleven := ctx.Int(11)
+	seventeen := ctx.Int(17)
 
 	// Each task must start after 9 and finish by 17
 	for i := range tasks {
 		task := &tasks[i]
 		duration := durations[task]
-		durationVal := ctx.FromInt(duration, ctx.IntSort()).(Int)
+		durationVal := ctx.Int(duration)
 		solver.Assert(tasks[i].GE(nine))
 		solver.Assert(tasks[i].Add(durationVal).LE(seventeen))
 	}
@@ -509,8 +509,8 @@ func TestOrganizeYourDay(t *testing.T) {
 		for j := i + 1; j < len(tasks); j++ {
 			task1 := &tasks[i]
 			task2 := &tasks[j]
-			duration1 := ctx.FromInt(durations[task1], ctx.IntSort()).(Int)
-			duration2 := ctx.FromInt(durations[task2], ctx.IntSort()).(Int)
+			duration1 := ctx.Int(durations[task1])
+			duration2 := ctx.Int(durations[task2])
 			// task1 finishes before task2 starts OR task2 finishes before task1 starts
 			solver.Assert(
 				tasks[i].Add(duration1).LE(tasks[j]).Or(
@@ -524,10 +524,10 @@ func TestOrganizeYourDay(t *testing.T) {
 	// - Start work after 11
 	solver.Assert(workStart.GE(eleven))
 	// - Send the mail before going to work
-	mailDuration := ctx.FromInt(1, ctx.IntSort()).(Int)
+	mailDuration := ctx.Int(1)
 	solver.Assert(mailStart.Add(mailDuration).LE(workStart))
 	// - Go to the bank before shopping
-	bankDuration := ctx.FromInt(2, ctx.IntSort()).(Int)
+	bankDuration := ctx.Int(2)
 	solver.Assert(bankStart.Add(bankDuration).LE(shoppingStart))
 
 	sat, err := solver.Check()
@@ -572,8 +572,8 @@ func TestSudoku(t *testing.T) {
 	ctx := NewContext(nil)
 	solver := NewSolver(ctx)
 
-	one := ctx.FromInt(1, ctx.IntSort()).(Int)
-	nine := ctx.FromInt(9, ctx.IntSort()).(Int)
+	one := ctx.Int(1)
+	nine := ctx.Int(9)
 
 	// Create 9x9 grid of integer variables
 	cells := make([][]Int, 9)
@@ -640,7 +640,7 @@ func TestSudoku(t *testing.T) {
 	for i := 0; i < 9; i++ {
 		for j := 0; j < 9; j++ {
 			if puzzle[i][j] != 0 {
-				solver.Assert(cells[i][j].Eq(ctx.FromInt(int64(puzzle[i][j]), ctx.IntSort()).(Int)))
+				solver.Assert(cells[i][j].Eq(ctx.Int(int64(puzzle[i][j]))))
 			}
 		}
 	}
@@ -686,8 +686,8 @@ func TestNQueens(t *testing.T) {
 	for i := 0; i < n; i++ {
 		queens[i] = ctx.IntConst("queen_" + string(rune('0'+i)))
 		// Each queen is in a valid column (0 to n-1)
-		solver.Assert(queens[i].GE(ctx.FromInt(0, ctx.IntSort()).(Int)))
-		solver.Assert(queens[i].LT(ctx.FromInt(int64(n), ctx.IntSort()).(Int)))
+		solver.Assert(queens[i].GE(ctx.Int(0)))
+		solver.Assert(queens[i].LT(ctx.Int(int64(n))))
 	}
 
 	// No two queens in the same column
@@ -702,8 +702,8 @@ func TestNQueens(t *testing.T) {
 		for j := i + 1; j < n; j++ {
 			// |queens[i] - queens[j]| != |i - j|
 			diff := int64(j - i)
-			diffVal := ctx.FromInt(diff, ctx.IntSort()).(Int)
-			negDiffVal := ctx.FromInt(-diff, ctx.IntSort()).(Int)
+			diffVal := ctx.Int(diff)
+			negDiffVal := ctx.Int(-diff)
 			// queens[j] - queens[i] != diff AND queens[j] - queens[i] != -diff
 			colDiff := queens[j].Sub(queens[i])
 			solver.Assert(colDiff.NE(diffVal))
@@ -745,9 +745,9 @@ func TestMagicSquare(t *testing.T) {
 	n := 3
 	magicSum := int64(15) // For 3x3, the magic constant is 15
 
-	one := ctx.FromInt(1, ctx.IntSort()).(Int)
-	nine := ctx.FromInt(int64(n*n), ctx.IntSort()).(Int)
-	target := ctx.FromInt(magicSum, ctx.IntSort()).(Int)
+	one := ctx.Int(1)
+	nine := ctx.Int(int64(n * n))
+	target := ctx.Int(magicSum)
 
 	// Create n x n grid
 	cells := make([][]Int, n)
@@ -835,8 +835,8 @@ func TestGraphColoring(t *testing.T) {
 	edges := [][2]int{{0, 1}, {1, 2}, {2, 3}, {3, 0}, {0, 2}}
 	numColors := int64(3) // Try with 3 colors
 
-	zero := ctx.FromInt(0, ctx.IntSort()).(Int)
-	maxColor := ctx.FromInt(numColors-1, ctx.IntSort()).(Int)
+	zero := ctx.Int(0)
+	maxColor := ctx.Int(numColors - 1)
 
 	// Create color variable for each vertex
 	colors := make([]Int, numVertices)
@@ -890,9 +890,9 @@ func TestKnapsack(t *testing.T) {
 	}
 	capacity := int64(6)
 
-	zero := ctx.FromInt(0, ctx.IntSort()).(Int)
-	one := ctx.FromInt(1, ctx.IntSort()).(Int)
-	capVal := ctx.FromInt(capacity, ctx.IntSort()).(Int)
+	zero := ctx.Int(0)
+	one := ctx.Int(1)
+	capVal := ctx.Int(capacity)
 
 	// Binary decision variables: take[i] = 0 or 1
 	take := make([]Int, len(items))
@@ -903,16 +903,16 @@ func TestKnapsack(t *testing.T) {
 	}
 
 	// Total weight constraint
-	weightSum := take[0].Mul(ctx.FromInt(items[0].weight, ctx.IntSort()).(Int))
+	weightSum := take[0].Mul(ctx.Int(items[0].weight))
 	for i := 1; i < len(items); i++ {
-		weightSum = weightSum.Add(take[i].Mul(ctx.FromInt(items[i].weight, ctx.IntSort()).(Int)))
+		weightSum = weightSum.Add(take[i].Mul(ctx.Int(items[i].weight)))
 	}
 	opt.Assert(weightSum.LE(capVal))
 
 	// Maximize total value
-	valueSum := take[0].Mul(ctx.FromInt(items[0].value, ctx.IntSort()).(Int))
+	valueSum := take[0].Mul(ctx.Int(items[0].value))
 	for i := 1; i < len(items); i++ {
-		valueSum = valueSum.Add(take[i].Mul(ctx.FromInt(items[i].value, ctx.IntSort()).(Int)))
+		valueSum = valueSum.Add(take[i].Mul(ctx.Int(items[i].value)))
 	}
 	obj := opt.Maximize(valueSum)
 
@@ -945,9 +945,9 @@ func TestSendMoreMoney(t *testing.T) {
 	ctx := NewContext(nil)
 	solver := NewSolver(ctx)
 
-	zero := ctx.FromInt(0, ctx.IntSort()).(Int)
-	nine := ctx.FromInt(9, ctx.IntSort()).(Int)
-	one := ctx.FromInt(1, ctx.IntSort()).(Int)
+	zero := ctx.Int(0)
+	nine := ctx.Int(9)
+	one := ctx.Int(1)
 
 	// Create a variable for each letter
 	s := ctx.IntConst("S")
@@ -982,10 +982,10 @@ func TestSendMoreMoney(t *testing.T) {
 	// SEND = 1000*S + 100*E + 10*N + D
 	// MORE = 1000*M + 100*O + 10*R + E
 	// MONEY = 10000*M + 1000*O + 100*N + 10*E + Y
-	thousand := ctx.FromInt(1000, ctx.IntSort()).(Int)
-	hundred := ctx.FromInt(100, ctx.IntSort()).(Int)
-	ten := ctx.FromInt(10, ctx.IntSort()).(Int)
-	tenThousand := ctx.FromInt(10000, ctx.IntSort()).(Int)
+	thousand := ctx.Int(1000)
+	hundred := ctx.Int(100)
+	ten := ctx.Int(10)
+	tenThousand := ctx.Int(10000)
 
 	send := s.Mul(thousand).Add(e.Mul(hundred)).Add(n.Mul(ten)).Add(d)
 	more := m.Mul(thousand).Add(o.Mul(hundred)).Add(r.Mul(ten)).Add(e)

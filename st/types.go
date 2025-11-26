@@ -4,8 +4,9 @@ package st
 
 import (
 	"fmt"
-	"github.com/aclements/go-z3/z3"
 	"math/big"
+
+	"github.com/ralscha/go-z3/z3"
 )
 
 type sorts struct {

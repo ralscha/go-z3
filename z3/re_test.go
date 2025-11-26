@@ -208,7 +208,7 @@ func TestRESymbolic(t *testing.T) {
 
 	solver := NewSolver(ctx)
 	solver.Assert(x.InRE(pattern))
-	solver.Assert(x.Length().Eq(ctx.FromInt(4, ctx.IntSort()).(Int)))
+	solver.Assert(x.Length().Eq(ctx.Int(4)))
 
 	if sat, _ := solver.Check(); !sat {
 		t.Error("expected SAT for symbolic regex match")

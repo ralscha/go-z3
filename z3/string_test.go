@@ -51,7 +51,7 @@ func TestStringLength(t *testing.T) {
 	length := s.Length()
 
 	solver := NewSolver(ctx)
-	solver.Assert(length.Eq(ctx.FromInt(5, ctx.IntSort()).(Int)))
+	solver.Assert(length.Eq(ctx.Int(5)))
 	if sat, _ := solver.Check(); !sat {
 		t.Error("expected SAT for length")
 	}
@@ -86,8 +86,8 @@ func TestStringPrefixSuffix(t *testing.T) {
 func TestStringExtract(t *testing.T) {
 	ctx := NewContext(nil)
 	s := ctx.FromString("hello world")
-	offset := ctx.FromInt(0, ctx.IntSort()).(Int)
-	length := ctx.FromInt(5, ctx.IntSort()).(Int)
+	offset := ctx.Int(0)
+	length := ctx.Int(5)
 	extracted := s.Extract(offset, length)
 
 	solver := NewSolver(ctx)
@@ -100,7 +100,7 @@ func TestStringExtract(t *testing.T) {
 func TestStringAt(t *testing.T) {
 	ctx := NewContext(nil)
 	s := ctx.FromString("hello")
-	idx := ctx.FromInt(1, ctx.IntSort()).(Int)
+	idx := ctx.Int(1)
 	ch := s.At(idx)
 
 	solver := NewSolver(ctx)
@@ -114,11 +114,11 @@ func TestStringIndexOf(t *testing.T) {
 	ctx := NewContext(nil)
 	s := ctx.FromString("hello world")
 	sub := ctx.FromString("world")
-	offset := ctx.FromInt(0, ctx.IntSort()).(Int)
+	offset := ctx.Int(0)
 	idx := s.IndexOf(sub, offset)
 
 	solver := NewSolver(ctx)
-	solver.Assert(idx.Eq(ctx.FromInt(6, ctx.IntSort()).(Int)))
+	solver.Assert(idx.Eq(ctx.Int(6)))
 	if sat, _ := solver.Check(); !sat {
 		t.Error("expected SAT for indexOf")
 	}
@@ -144,7 +144,7 @@ func TestStringToInt(t *testing.T) {
 	i := s.ToInt()
 
 	solver := NewSolver(ctx)
-	solver.Assert(i.Eq(ctx.FromInt(42, ctx.IntSort()).(Int)))
+	solver.Assert(i.Eq(ctx.Int(42)))
 	if sat, _ := solver.Check(); !sat {
 		t.Error("expected SAT for toInt")
 	}
@@ -152,7 +152,7 @@ func TestStringToInt(t *testing.T) {
 
 func TestIntToString(t *testing.T) {
 	ctx := NewContext(nil)
-	i := ctx.FromInt(42, ctx.IntSort()).(Int)
+	i := ctx.Int(42)
 	s := ctx.IntToString(i)
 
 	solver := NewSolver(ctx)
@@ -171,7 +171,7 @@ func TestStringSymbolic(t *testing.T) {
 	// x + y = "hello"
 	solver.Assert(x.Concat(y).Eq(ctx.FromString("hello")))
 	// length(x) = 2
-	solver.Assert(x.Length().Eq(ctx.FromInt(2, ctx.IntSort()).(Int)))
+	solver.Assert(x.Length().Eq(ctx.Int(2)))
 
 	if sat, _ := solver.Check(); !sat {
 		t.Error("expected SAT for symbolic string")

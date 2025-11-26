@@ -235,6 +235,34 @@ func (ctx *Context) FromFloat64(val float64, sort Sort) Float {
 	return out
 }
 
+// Float32Sort returns a single precision (float32) floating-point sort
+// with 8 exponent bits and 24 significand bits.
+func (ctx *Context) Float32Sort() Sort {
+	return ctx.FloatSort(8, 24)
+}
+
+// Float64Sort returns a double precision (float64) floating-point sort
+// with 11 exponent bits and 53 significand bits.
+func (ctx *Context) Float64Sort() Sort {
+	return ctx.FloatSort(11, 53)
+}
+
+// Float32 returns a single precision floating-point literal from val.
+func (ctx *Context) Float32(val float32) Float {
+	return ctx.FromFloat32(val, ctx.Float32Sort())
+}
+
+// Float32FromFloat64 returns a single precision floating-point literal
+// from a float64 value.
+func (ctx *Context) Float32FromFloat64(val float64) Float {
+	return ctx.FromFloat64(val, ctx.Float32Sort())
+}
+
+// Float64 returns a double precision floating-point literal from val.
+func (ctx *Context) Float64(val float64) Float {
+	return ctx.FromFloat64(val, ctx.Float64Sort())
+}
+
 var testingFloatAlwaysFromBigInt bool
 
 func (ctx *Context) floatFromInt(val int64, sort Sort) Float {

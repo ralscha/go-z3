@@ -36,7 +36,7 @@ func TestRealRational(t *testing.T) {
 
 func TestRealIrrational(t *testing.T) {
 	ctx := NewContext(nil)
-	root2 := ctx.Simplify(ctx.FromInt(2, ctx.IntSort()).(Int).ToReal().Exp(ctx.FromBigRat(big.NewRat(1, 2))), nil).(Real)
+	root2 := ctx.Simplify(ctx.Int(2).ToReal().Exp(ctx.FromBigRat(big.NewRat(1, 2))), nil).(Real)
 
 	_, _, isLit := root2.AsRat()
 	if isLit {

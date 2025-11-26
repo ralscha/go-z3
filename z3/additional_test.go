@@ -416,7 +416,7 @@ func TestStringLastIndexOf(t *testing.T) {
 	idx := s.LastIndexOf(sub)
 
 	solver := NewSolver(ctx)
-	solver.Assert(idx.Eq(ctx.FromInt(6, ctx.IntSort()).(Int)))
+	solver.Assert(idx.Eq(ctx.Int(6)))
 	if sat, _ := solver.Check(); !sat {
 		t.Error("expected SAT for LastIndexOf")
 	}
@@ -436,12 +436,12 @@ func TestStringConstAdditional(t *testing.T) {
 func TestStringNth(t *testing.T) {
 	ctx := NewContext(nil)
 	s := ctx.FromString("hello")
-	idx := ctx.FromInt(1, ctx.IntSort()).(Int)
+	idx := ctx.Int(1)
 	ch := s.Nth(idx).(Char)
 
 	solver := NewSolver(ctx)
 	// Nth returns a Char
-	solver.Assert(ch.ToInt().Eq(ctx.FromInt(101, ctx.IntSort()).(Int))) // 'e' = 101
+	solver.Assert(ch.ToInt().Eq(ctx.Int(101))) // 'e' = 101
 	if sat, _ := solver.Check(); !sat {
 		t.Error("expected SAT for Nth")
 	}
@@ -478,7 +478,7 @@ func TestEmptySeq(t *testing.T) {
 	empty := ctx.EmptySeq(seqSort)
 
 	solver := NewSolver(ctx)
-	solver.Assert(empty.Length().Eq(ctx.FromInt(0, ctx.IntSort()).(Int)))
+	solver.Assert(empty.Length().Eq(ctx.Int(0)))
 	if sat, _ := solver.Check(); !sat {
 		t.Error("expected SAT for empty seq")
 	}
@@ -491,7 +491,7 @@ func TestSeqUnit(t *testing.T) {
 	unit := ctx.SeqUnit(val)
 
 	solver := NewSolver(ctx)
-	solver.Assert(unit.Length().Eq(ctx.FromInt(1, ctx.IntSort()).(Int)))
+	solver.Assert(unit.Length().Eq(ctx.Int(1)))
 	if sat, _ := solver.Check(); !sat {
 		t.Error("expected SAT for seq unit")
 	}
@@ -638,8 +638,8 @@ func TestCharEq(t *testing.T) {
 
 	solver := NewSolver(ctx)
 	solver.Assert(c1.Eq(c2))
-	solver.Assert(c1.ToInt().Eq(ctx.FromInt(65, ctx.IntSort()).(Int)))
-	solver.Assert(c2.ToInt().Eq(ctx.FromInt(65, ctx.IntSort()).(Int)))
+	solver.Assert(c1.ToInt().Eq(ctx.Int(65)))
+	solver.Assert(c2.ToInt().Eq(ctx.Int(65)))
 	if sat, _ := solver.Check(); !sat {
 		t.Error("expected SAT for char equality")
 	}
@@ -671,7 +671,7 @@ func TestCharConst(t *testing.T) {
 	c := ctx.CharConst("c")
 
 	solver := NewSolver(ctx)
-	solver.Assert(c.ToInt().Eq(ctx.FromInt(65, ctx.IntSort()).(Int)))
+	solver.Assert(c.ToInt().Eq(ctx.Int(65)))
 	if sat, _ := solver.Check(); !sat {
 		t.Error("expected SAT for char const")
 	}
@@ -685,7 +685,7 @@ func TestCharFromBV(t *testing.T) {
 	c := ctx.CharFromBV(bv)
 
 	solver := NewSolver(ctx)
-	solver.Assert(c.ToInt().Eq(ctx.FromInt(65, ctx.IntSort()).(Int)))
+	solver.Assert(c.ToInt().Eq(ctx.Int(65)))
 	if sat, _ := solver.Check(); !sat {
 		t.Error("expected SAT for CharFromBV")
 	}

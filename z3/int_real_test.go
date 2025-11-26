@@ -11,8 +11,8 @@ import (
 
 func TestIntNE(t *testing.T) {
 	ctx := NewContext(nil)
-	x := ctx.FromInt(5, ctx.IntSort()).(Int)
-	y := ctx.FromInt(10, ctx.IntSort()).(Int)
+	x := ctx.Int(5)
+	y := ctx.Int(10)
 
 	solver := NewSolver(ctx)
 	solver.Assert(x.NE(y))
@@ -23,13 +23,13 @@ func TestIntNE(t *testing.T) {
 
 func TestIntDiv(t *testing.T) {
 	ctx := NewContext(nil)
-	x := ctx.FromInt(23, ctx.IntSort()).(Int)
-	y := ctx.FromInt(5, ctx.IntSort()).(Int)
+	x := ctx.Int(23)
+	y := ctx.Int(5)
 	result := x.Div(y)
 
 	solver := NewSolver(ctx)
 	// Z3 integer division floors, so 23 / 5 = 4
-	solver.Assert(result.Eq(ctx.FromInt(4, ctx.IntSort()).(Int)))
+	solver.Assert(result.Eq(ctx.Int(4)))
 	if sat, _ := solver.Check(); !sat {
 		t.Error("expected SAT for 23 div 5 = 4")
 	}
@@ -37,12 +37,12 @@ func TestIntDiv(t *testing.T) {
 
 func TestIntMod(t *testing.T) {
 	ctx := NewContext(nil)
-	x := ctx.FromInt(23, ctx.IntSort()).(Int)
-	y := ctx.FromInt(5, ctx.IntSort()).(Int)
+	x := ctx.Int(23)
+	y := ctx.Int(5)
 	result := x.Mod(y)
 
 	solver := NewSolver(ctx)
-	solver.Assert(result.Eq(ctx.FromInt(3, ctx.IntSort()).(Int)))
+	solver.Assert(result.Eq(ctx.Int(3)))
 	if sat, _ := solver.Check(); !sat {
 		t.Error("expected SAT for 23 mod 5 = 3")
 	}
@@ -50,14 +50,14 @@ func TestIntMod(t *testing.T) {
 
 func TestIntRem(t *testing.T) {
 	ctx := NewContext(nil)
-	x := ctx.FromInt(-23, ctx.IntSort()).(Int)
-	y := ctx.FromInt(5, ctx.IntSort()).(Int)
+	x := ctx.Int(-23)
+	y := ctx.Int(5)
 	result := x.Rem(y)
 
 	solver := NewSolver(ctx)
 	// Z3's Rem is based on floored division, not truncated division like Go's %.
 	// For floored division: -23 / 5 = -5, so -23 rem 5 = -23 - (-5 * 5) = 2
-	solver.Assert(result.Eq(ctx.FromInt(2, ctx.IntSort()).(Int)))
+	solver.Assert(result.Eq(ctx.Int(2)))
 	if sat, _ := solver.Check(); !sat {
 		t.Error("expected SAT for -23 rem 5 = 2")
 	}
@@ -65,12 +65,12 @@ func TestIntRem(t *testing.T) {
 
 func TestIntMul(t *testing.T) {
 	ctx := NewContext(nil)
-	x := ctx.FromInt(5, ctx.IntSort()).(Int)
-	y := ctx.FromInt(4, ctx.IntSort()).(Int)
+	x := ctx.Int(5)
+	y := ctx.Int(4)
 	result := x.Mul(y)
 
 	solver := NewSolver(ctx)
-	solver.Assert(result.Eq(ctx.FromInt(20, ctx.IntSort()).(Int)))
+	solver.Assert(result.Eq(ctx.Int(20)))
 	if sat, _ := solver.Check(); !sat {
 		t.Error("expected SAT for 5 * 4 = 20")
 	}
@@ -78,12 +78,12 @@ func TestIntMul(t *testing.T) {
 
 func TestIntSub(t *testing.T) {
 	ctx := NewContext(nil)
-	x := ctx.FromInt(10, ctx.IntSort()).(Int)
-	y := ctx.FromInt(3, ctx.IntSort()).(Int)
+	x := ctx.Int(10)
+	y := ctx.Int(3)
 	result := x.Sub(y)
 
 	solver := NewSolver(ctx)
-	solver.Assert(result.Eq(ctx.FromInt(7, ctx.IntSort()).(Int)))
+	solver.Assert(result.Eq(ctx.Int(7)))
 	if sat, _ := solver.Check(); !sat {
 		t.Error("expected SAT for 10 - 3 = 7")
 	}
@@ -91,11 +91,11 @@ func TestIntSub(t *testing.T) {
 
 func TestIntNeg(t *testing.T) {
 	ctx := NewContext(nil)
-	x := ctx.FromInt(5, ctx.IntSort()).(Int)
+	x := ctx.Int(5)
 	result := x.Neg()
 
 	solver := NewSolver(ctx)
-	solver.Assert(result.Eq(ctx.FromInt(-5, ctx.IntSort()).(Int)))
+	solver.Assert(result.Eq(ctx.Int(-5)))
 	if sat, _ := solver.Check(); !sat {
 		t.Error("expected SAT for -5 = -5")
 	}
@@ -103,12 +103,12 @@ func TestIntNeg(t *testing.T) {
 
 func TestIntExp(t *testing.T) {
 	ctx := NewContext(nil)
-	x := ctx.FromInt(2, ctx.IntSort()).(Int)
-	y := ctx.FromInt(3, ctx.IntSort()).(Int)
+	x := ctx.Int(2)
+	y := ctx.Int(3)
 	result := x.Exp(y)
 
 	solver := NewSolver(ctx)
-	solver.Assert(result.Eq(ctx.FromInt(8, ctx.IntSort()).(Int)))
+	solver.Assert(result.Eq(ctx.Int(8)))
 	if sat, _ := solver.Check(); !sat {
 		t.Error("expected SAT for 2^3 = 8")
 	}
@@ -116,8 +116,8 @@ func TestIntExp(t *testing.T) {
 
 func TestIntLT(t *testing.T) {
 	ctx := NewContext(nil)
-	x := ctx.FromInt(5, ctx.IntSort()).(Int)
-	y := ctx.FromInt(10, ctx.IntSort()).(Int)
+	x := ctx.Int(5)
+	y := ctx.Int(10)
 
 	solver := NewSolver(ctx)
 	solver.Assert(x.LT(y))
@@ -128,8 +128,8 @@ func TestIntLT(t *testing.T) {
 
 func TestIntGT(t *testing.T) {
 	ctx := NewContext(nil)
-	x := ctx.FromInt(10, ctx.IntSort()).(Int)
-	y := ctx.FromInt(5, ctx.IntSort()).(Int)
+	x := ctx.Int(10)
+	y := ctx.Int(5)
 
 	solver := NewSolver(ctx)
 	solver.Assert(x.GT(y))
@@ -140,7 +140,7 @@ func TestIntGT(t *testing.T) {
 
 func TestIntToBV(t *testing.T) {
 	ctx := NewContext(nil)
-	x := ctx.FromInt(42, ctx.IntSort()).(Int)
+	x := ctx.Int(42)
 	bv := x.ToBV(8)
 
 	solver := NewSolver(ctx)
@@ -152,7 +152,7 @@ func TestIntToBV(t *testing.T) {
 
 func TestIntAsUint64(t *testing.T) {
 	ctx := NewContext(nil)
-	x := ctx.FromInt(42, ctx.IntSort()).(Int)
+	x := ctx.Int(42)
 	val, _, ok := x.AsUint64()
 	if !ok {
 		t.Error("expected ok for AsUint64")
@@ -264,12 +264,12 @@ func TestRealIsInt(t *testing.T) {
 func TestRealToFloatExp(t *testing.T) {
 	ctx := NewContext(nil)
 	x := ctx.FromBigRat(big.NewRat(5, 2)) // 2.5
-	floatSort := ctx.FloatSort(8, 24)     // float32
-	exp := ctx.FromInt(0, ctx.IntSort()).(Int)
+	floatSort := ctx.Float32Sort()        // float32
+	exp := ctx.Int(0)
 	f := x.ToFloatExp(exp, floatSort)
 
 	solver := NewSolver(ctx)
-	solver.Assert(f.Eq(ctx.FromFloat64(2.5, floatSort)))
+	solver.Assert(f.Eq(ctx.Float32FromFloat64(2.5)))
 	if sat, _ := solver.Check(); !sat {
 		t.Error("expected SAT for real to float")
 	}
@@ -292,8 +292,8 @@ func TestBoolNE(t *testing.T) {
 func TestBoolIfThenElse(t *testing.T) {
 	ctx := NewContext(nil)
 	cond := ctx.FromBool(true)
-	x := ctx.FromInt(1, ctx.IntSort()).(Int)
-	y := ctx.FromInt(2, ctx.IntSort()).(Int)
+	x := ctx.Int(1)
+	y := ctx.Int(2)
 	result := cond.IfThenElse(x, y).(Int)
 
 	solver := NewSolver(ctx)

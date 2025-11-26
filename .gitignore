@@ -1,4 +1,1 @@
-# Z3 in debug mode leaves behind .z3-trace files.
-.z3-trace
-
-/z3/z3.test
+lib

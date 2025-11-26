@@ -19,9 +19,9 @@ func TestOptimize(t *testing.T) {
 
 	x := ctx.IntConst("x")
 	y := ctx.IntConst("y")
-	zero := ctx.FromInt(0, ctx.IntSort()).(Int)
-	ten := ctx.FromInt(10, ctx.IntSort()).(Int)
-	eleven := ctx.FromInt(11, ctx.IntSort()).(Int)
+	zero := ctx.Int(0)
+	ten := ctx.Int(10)
+	eleven := ctx.Int(11)
 
 	opt.Assert(ten.GE(x).And(x.GE(zero)))
 	opt.Assert(ten.GE(y).And(y.GE(zero)))
@@ -84,13 +84,13 @@ func TestOptimizeMinimize(t *testing.T) {
 
 	x := ctx.IntConst("x")
 	y := ctx.IntConst("y")
-	zero := ctx.FromInt(0, ctx.IntSort()).(Int)
-	ten := ctx.FromInt(10, ctx.IntSort()).(Int)
+	zero := ctx.Int(0)
+	ten := ctx.Int(10)
 
 	// x >= 0, y >= 0, x + y >= 5
 	opt.Assert(x.GE(zero))
 	opt.Assert(y.GE(zero))
-	opt.Assert(x.Add(y).GE(ctx.FromInt(5, ctx.IntSort()).(Int)))
+	opt.Assert(x.Add(y).GE(ctx.Int(5)))
 	opt.Assert(x.LE(ten))
 	opt.Assert(y.LE(ten))
 
@@ -117,9 +117,9 @@ func TestOptimizePushPop(t *testing.T) {
 	opt := NewOptimize(ctx)
 
 	x := ctx.IntConst("x")
-	zero := ctx.FromInt(0, ctx.IntSort()).(Int)
-	ten := ctx.FromInt(10, ctx.IntSort()).(Int)
-	five := ctx.FromInt(5, ctx.IntSort()).(Int)
+	zero := ctx.Int(0)
+	ten := ctx.Int(10)
+	five := ctx.Int(5)
 
 	opt.Assert(x.GE(zero))
 	opt.Assert(x.LE(ten))
@@ -174,7 +174,7 @@ func TestOptimizeString(t *testing.T) {
 	opt := NewOptimize(ctx)
 
 	x := ctx.IntConst("x")
-	opt.Assert(x.GE(ctx.FromInt(0, ctx.IntSort()).(Int)))
+	opt.Assert(x.GE(ctx.Int(0)))
 
 	s := opt.String()
 	if s == "" {
@@ -189,7 +189,7 @@ func TestOptimizeAssertions(t *testing.T) {
 
 	x := ctx.IntConst("x")
 	y := ctx.IntConst("y")
-	zero := ctx.FromInt(0, ctx.IntSort()).(Int)
+	zero := ctx.Int(0)
 
 	opt.Assert(x.GE(zero))
 	opt.Assert(y.GE(zero))

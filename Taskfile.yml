@@ -1,0 +1,33 @@
+version: '3'
+
+vars:
+  Z3_LIB_DIR: '{{.ROOT_DIR}}/lib/z3-4.15.4-x64-win'
+  MINGW_DIR: 'C:/w/misc/mingw64'
+
+env:
+  CGO_ENABLED: '1'
+  CGO_CFLAGS: '-I{{.Z3_LIB_DIR}}/include'
+  CGO_LDFLAGS: '-L{{.Z3_LIB_DIR}}/bin -lz3'
+  PATH: '{{.MINGW_DIR}}/bin;{{.Z3_LIB_DIR}}/bin;{{.PATH}}'
+  CC: '{{.MINGW_DIR}}/bin/gcc.exe'
+
+tasks:
+  test:
+    desc: Run all tests
+    cmds:
+      - go test ./...
+
+  test:v:
+    desc: Run all tests with verbose output
+    cmds:
+      - go test -v ./...
+
+  build:
+    desc: Build the project
+    cmds:
+      - go build ./...
+
+  default:
+    desc: List available tasks
+    cmds:
+      - task --list

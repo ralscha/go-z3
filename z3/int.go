@@ -37,6 +37,28 @@ func (ctx *Context) IntConst(name string) Int {
 	return ctx.Const(name, ctx.IntSort()).(Int)
 }
 
+// Int returns a literal Int whose value is val.
+func (ctx *Context) Int(val int) Int {
+	return ctx.FromInt(int64(val), ctx.IntSort()).(Int)
+}
+
+// Int64 returns a literal Int whose value is val.
+func (ctx *Context) Int64(val int64) Int {
+	return ctx.FromInt(val, ctx.IntSort()).(Int)
+}
+
+// IntFromSort returns a literal Int whose value is val with the given sort.
+// The sort must have kind int.
+func (ctx *Context) IntFromSort(val int, sort Sort) Int {
+	return ctx.FromInt(int64(val), sort).(Int)
+}
+
+// Int64FromSort returns a literal Int whose value is val with the given sort.
+// The sort must have kind int.
+func (ctx *Context) Int64FromSort(val int64, sort Sort) Int {
+	return ctx.FromInt(val, sort).(Int)
+}
+
 // AsInt64 returns the value of lit as an int64. If lit is not a
 // literal, it returns 0, false, false. If lit is a literal, but its
 // value cannot be represented as an int64, it returns 0, true, false.

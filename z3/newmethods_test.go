@@ -11,8 +11,8 @@ func TestIntAbs(t *testing.T) {
 	x := ctx.Const("x", ctx.IntSort()).(Int)
 
 	solver := NewSolver(ctx)
-	solver.Assert(x.Eq(ctx.FromInt(-5, ctx.IntSort()).(Int)))
-	solver.Assert(x.Abs().Eq(ctx.FromInt(5, ctx.IntSort()).(Int)))
+	solver.Assert(x.Eq(ctx.Int(-5)))
+	solver.Assert(x.Abs().Eq(ctx.Int(5)))
 
 	if sat, _ := solver.Check(); !sat {
 		t.Error("expected SAT for abs(-5) = 5")
@@ -24,8 +24,8 @@ func TestIntAbsPositive(t *testing.T) {
 	x := ctx.Const("x", ctx.IntSort()).(Int)
 
 	solver := NewSolver(ctx)
-	solver.Assert(x.Eq(ctx.FromInt(5, ctx.IntSort()).(Int)))
-	solver.Assert(x.Abs().Eq(ctx.FromInt(5, ctx.IntSort()).(Int)))
+	solver.Assert(x.Eq(ctx.Int(5)))
+	solver.Assert(x.Abs().Eq(ctx.Int(5)))
 
 	if sat, _ := solver.Check(); !sat {
 		t.Error("expected SAT for abs(5) = 5")
@@ -38,8 +38,8 @@ func TestIntDivides(t *testing.T) {
 
 	solver := NewSolver(ctx)
 	// x is divisible by 3
-	solver.Assert(ctx.FromInt(3, ctx.IntSort()).(Int).Divides(x))
-	solver.Assert(x.Eq(ctx.FromInt(9, ctx.IntSort()).(Int)))
+	solver.Assert(ctx.Int(3).Divides(x))
+	solver.Assert(x.Eq(ctx.Int(9)))
 
 	if sat, _ := solver.Check(); !sat {
 		t.Error("expected SAT for 3 divides 9")
@@ -52,8 +52,8 @@ func TestIntDividesUnsat(t *testing.T) {
 
 	solver := NewSolver(ctx)
 	// x is divisible by 3
-	solver.Assert(ctx.FromInt(3, ctx.IntSort()).(Int).Divides(x))
-	solver.Assert(x.Eq(ctx.FromInt(10, ctx.IntSort()).(Int)))
+	solver.Assert(ctx.Int(3).Divides(x))
+	solver.Assert(x.Eq(ctx.Int(10)))
 
 	if sat, _ := solver.Check(); sat {
 		t.Error("expected UNSAT for 3 divides 10")

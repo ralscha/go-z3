@@ -10,9 +10,8 @@ import (
 
 func TestFloatNE(t *testing.T) {
 	ctx := NewContext(nil)
-	sort := ctx.FloatSort(8, 24) // float32
-	x := ctx.FromFloat64(1.5, sort)
-	y := ctx.FromFloat64(2.5, sort)
+	x := ctx.Float32FromFloat64(1.5)
+	y := ctx.Float32FromFloat64(2.5)
 
 	solver := NewSolver(ctx)
 	solver.Assert(x.NE(y))
@@ -23,12 +22,11 @@ func TestFloatNE(t *testing.T) {
 
 func TestFloatAbs(t *testing.T) {
 	ctx := NewContext(nil)
-	sort := ctx.FloatSort(8, 24)
-	x := ctx.FromFloat64(-3.5, sort)
+	x := ctx.Float32FromFloat64(-3.5)
 	result := x.Abs()
 
 	solver := NewSolver(ctx)
-	solver.Assert(result.Eq(ctx.FromFloat64(3.5, sort)))
+	solver.Assert(result.Eq(ctx.Float32FromFloat64(3.5)))
 	if sat, _ := solver.Check(); !sat {
 		t.Error("expected SAT for abs(-3.5) = 3.5")
 	}
@@ -36,12 +34,11 @@ func TestFloatAbs(t *testing.T) {
 
 func TestFloatNeg(t *testing.T) {
 	ctx := NewContext(nil)
-	sort := ctx.FloatSort(8, 24)
-	x := ctx.FromFloat64(3.5, sort)
+	x := ctx.Float32FromFloat64(3.5)
 	result := x.Neg()
 
 	solver := NewSolver(ctx)
-	solver.Assert(result.Eq(ctx.FromFloat64(-3.5, sort)))
+	solver.Assert(result.Eq(ctx.Float32FromFloat64(-3.5)))
 	if sat, _ := solver.Check(); !sat {
 		t.Error("expected SAT for neg(3.5) = -3.5")
 	}
@@ -49,13 +46,12 @@ func TestFloatNeg(t *testing.T) {
 
 func TestFloatAdd(t *testing.T) {
 	ctx := NewContext(nil)
-	sort := ctx.FloatSort(8, 24)
-	x := ctx.FromFloat64(1.5, sort)
-	y := ctx.FromFloat64(2.5, sort)
+	x := ctx.Float32FromFloat64(1.5)
+	y := ctx.Float32FromFloat64(2.5)
 	result := x.Add(y)
 
 	solver := NewSolver(ctx)
-	solver.Assert(result.Eq(ctx.FromFloat64(4.0, sort)))
+	solver.Assert(result.Eq(ctx.Float32FromFloat64(4.0)))
 	if sat, _ := solver.Check(); !sat {
 		t.Error("expected SAT for 1.5 + 2.5 = 4.0")
 	}
@@ -63,13 +59,12 @@ func TestFloatAdd(t *testing.T) {
 
 func TestFloatSub(t *testing.T) {
 	ctx := NewContext(nil)
-	sort := ctx.FloatSort(8, 24)
-	x := ctx.FromFloat64(5.0, sort)
-	y := ctx.FromFloat64(2.0, sort)
+	x := ctx.Float32FromFloat64(5.0)
+	y := ctx.Float32FromFloat64(2.0)
 	result := x.Sub(y)
 
 	solver := NewSolver(ctx)
-	solver.Assert(result.Eq(ctx.FromFloat64(3.0, sort)))
+	solver.Assert(result.Eq(ctx.Float32FromFloat64(3.0)))
 	if sat, _ := solver.Check(); !sat {
 		t.Error("expected SAT for 5.0 - 2.0 = 3.0")
 	}
@@ -77,13 +72,12 @@ func TestFloatSub(t *testing.T) {
 
 func TestFloatMul(t *testing.T) {
 	ctx := NewContext(nil)
-	sort := ctx.FloatSort(8, 24)
-	x := ctx.FromFloat64(2.0, sort)
-	y := ctx.FromFloat64(3.0, sort)
+	x := ctx.Float32FromFloat64(2.0)
+	y := ctx.Float32FromFloat64(3.0)
 	result := x.Mul(y)
 
 	solver := NewSolver(ctx)
-	solver.Assert(result.Eq(ctx.FromFloat64(6.0, sort)))
+	solver.Assert(result.Eq(ctx.Float32FromFloat64(6.0)))
 	if sat, _ := solver.Check(); !sat {
 		t.Error("expected SAT for 2.0 * 3.0 = 6.0")
 	}
@@ -91,13 +85,12 @@ func TestFloatMul(t *testing.T) {
 
 func TestFloatDiv(t *testing.T) {
 	ctx := NewContext(nil)
-	sort := ctx.FloatSort(8, 24)
-	x := ctx.FromFloat64(6.0, sort)
-	y := ctx.FromFloat64(2.0, sort)
+	x := ctx.Float32FromFloat64(6.0)
+	y := ctx.Float32FromFloat64(2.0)
 	result := x.Div(y)
 
 	solver := NewSolver(ctx)
-	solver.Assert(result.Eq(ctx.FromFloat64(3.0, sort)))
+	solver.Assert(result.Eq(ctx.Float32FromFloat64(3.0)))
 	if sat, _ := solver.Check(); !sat {
 		t.Error("expected SAT for 6.0 / 2.0 = 3.0")
 	}
@@ -105,14 +98,13 @@ func TestFloatDiv(t *testing.T) {
 
 func TestFloatMulAdd(t *testing.T) {
 	ctx := NewContext(nil)
-	sort := ctx.FloatSort(8, 24)
-	x := ctx.FromFloat64(2.0, sort)
-	y := ctx.FromFloat64(3.0, sort)
-	z := ctx.FromFloat64(1.0, sort)
+	x := ctx.Float32FromFloat64(2.0)
+	y := ctx.Float32FromFloat64(3.0)
+	z := ctx.Float32FromFloat64(1.0)
 	result := x.MulAdd(y, z) // x*y + z
 
 	solver := NewSolver(ctx)
-	solver.Assert(result.Eq(ctx.FromFloat64(7.0, sort)))
+	solver.Assert(result.Eq(ctx.Float32FromFloat64(7.0)))
 	if sat, _ := solver.Check(); !sat {
 		t.Error("expected SAT for 2.0 * 3.0 + 1.0 = 7.0")
 	}
@@ -120,12 +112,11 @@ func TestFloatMulAdd(t *testing.T) {
 
 func TestFloatSqrt(t *testing.T) {
 	ctx := NewContext(nil)
-	sort := ctx.FloatSort(8, 24)
-	x := ctx.FromFloat64(4.0, sort)
+	x := ctx.Float32FromFloat64(4.0)
 	result := x.Sqrt()
 
 	solver := NewSolver(ctx)
-	solver.Assert(result.Eq(ctx.FromFloat64(2.0, sort)))
+	solver.Assert(result.Eq(ctx.Float32FromFloat64(2.0)))
 	if sat, _ := solver.Check(); !sat {
 		t.Error("expected SAT for sqrt(4.0) = 2.0")
 	}
@@ -133,13 +124,12 @@ func TestFloatSqrt(t *testing.T) {
 
 func TestFloatRem(t *testing.T) {
 	ctx := NewContext(nil)
-	sort := ctx.FloatSort(8, 24)
-	x := ctx.FromFloat64(5.0, sort)
-	y := ctx.FromFloat64(2.0, sort)
+	x := ctx.Float32FromFloat64(5.0)
+	y := ctx.Float32FromFloat64(2.0)
 	result := x.Rem(y)
 
 	solver := NewSolver(ctx)
-	solver.Assert(result.Eq(ctx.FromFloat64(1.0, sort)))
+	solver.Assert(result.Eq(ctx.Float32FromFloat64(1.0)))
 	if sat, _ := solver.Check(); !sat {
 		t.Error("expected SAT for 5.0 rem 2.0 = 1.0")
 	}
@@ -147,20 +137,19 @@ func TestFloatRem(t *testing.T) {
 
 func TestFloatMinMax(t *testing.T) {
 	ctx := NewContext(nil)
-	sort := ctx.FloatSort(8, 24)
-	x := ctx.FromFloat64(3.0, sort)
-	y := ctx.FromFloat64(5.0, sort)
+	x := ctx.Float32FromFloat64(3.0)
+	y := ctx.Float32FromFloat64(5.0)
 
 	minResult := x.Min(y)
 	solver := NewSolver(ctx)
-	solver.Assert(minResult.Eq(ctx.FromFloat64(3.0, sort)))
+	solver.Assert(minResult.Eq(ctx.Float32FromFloat64(3.0)))
 	if sat, _ := solver.Check(); !sat {
 		t.Error("expected SAT for min(3.0, 5.0) = 3.0")
 	}
 
 	maxResult := x.Max(y)
 	solver2 := NewSolver(ctx)
-	solver2.Assert(maxResult.Eq(ctx.FromFloat64(5.0, sort)))
+	solver2.Assert(maxResult.Eq(ctx.Float32FromFloat64(5.0)))
 	if sat, _ := solver2.Check(); !sat {
 		t.Error("expected SAT for max(3.0, 5.0) = 5.0")
 	}
@@ -168,9 +157,8 @@ func TestFloatMinMax(t *testing.T) {
 
 func TestFloatComparisons(t *testing.T) {
 	ctx := NewContext(nil)
-	sort := ctx.FloatSort(8, 24)
-	x := ctx.FromFloat64(3.0, sort)
-	y := ctx.FromFloat64(5.0, sort)
+	x := ctx.Float32FromFloat64(3.0)
+	y := ctx.Float32FromFloat64(5.0)
 
 	solver := NewSolver(ctx)
 	solver.Assert(x.LT(y))
@@ -197,7 +185,7 @@ func TestFloatComparisons(t *testing.T) {
 	}
 
 	solver5 := NewSolver(ctx)
-	z := ctx.FromFloat64(3.0, sort)
+	z := ctx.Float32FromFloat64(3.0)
 	solver5.Assert(x.IEEEEq(z))
 	if sat, _ := solver5.Check(); !sat {
 		t.Error("expected SAT for 3.0 IEEE= 3.0")
@@ -206,10 +194,9 @@ func TestFloatComparisons(t *testing.T) {
 
 func TestFloatPredicates(t *testing.T) {
 	ctx := NewContext(nil)
-	sort := ctx.FloatSort(8, 24)
 
 	// Test IsNormal
-	x := ctx.FromFloat64(1.0, sort)
+	x := ctx.Float32FromFloat64(1.0)
 	solver := NewSolver(ctx)
 	solver.Assert(x.IsNormal())
 	if sat, _ := solver.Check(); !sat {
@@ -232,7 +219,7 @@ func TestFloatPredicates(t *testing.T) {
 	}
 
 	// Test IsNegative
-	negX := ctx.FromFloat64(-1.0, sort)
+	negX := ctx.Float32FromFloat64(-1.0)
 	solver4 := NewSolver(ctx)
 	solver4.Assert(negX.IsNegative())
 	if sat, _ := solver4.Check(); !sat {
@@ -267,20 +254,20 @@ func TestFloatPredicates(t *testing.T) {
 
 func TestFloatConversions(t *testing.T) {
 	ctx := NewContext(nil)
-	sort32 := ctx.FloatSort(8, 24)  // float32
-	sort64 := ctx.FloatSort(11, 53) // float64
+	sort32 := ctx.Float32Sort() // float32
+	sort64 := ctx.Float64Sort() // float64
 
 	// ToFloat (different precision)
-	x := ctx.FromFloat64(2.5, sort32)
+	x := ctx.Float32FromFloat64(2.5)
 	y := x.ToFloat(sort64)
 	solver := NewSolver(ctx)
-	solver.Assert(y.Eq(ctx.FromFloat64(2.5, sort64)))
+	solver.Assert(y.Eq(ctx.Float64(2.5)))
 	if sat, _ := solver.Check(); !sat {
 		t.Error("expected SAT for float32(2.5) to float64")
 	}
 
 	// ToUBV
-	z := ctx.FromFloat64(42.0, sort32)
+	z := ctx.Float32FromFloat64(42.0)
 	bvu := z.ToUBV(8)
 	solver2 := NewSolver(ctx)
 	solver2.Assert(bvu.Eq(ctx.FromInt(42, ctx.BVSort(8)).(BV)))
@@ -289,7 +276,7 @@ func TestFloatConversions(t *testing.T) {
 	}
 
 	// ToSBV
-	w := ctx.FromFloat64(-5.0, sort32)
+	w := ctx.Float32FromFloat64(-5.0)
 	bvs := w.ToSBV(8)
 	solver3 := NewSolver(ctx)
 	solver3.Assert(bvs.Eq(ctx.FromInt(-5, ctx.BVSort(8)).(BV)))
@@ -298,7 +285,7 @@ func TestFloatConversions(t *testing.T) {
 	}
 
 	// ToIEEEBV
-	v := ctx.FromFloat64(1.5, sort32)
+	v := ctx.Float32FromFloat64(1.5)
 	ieeeBV := v.ToIEEEBV()
 	solver4 := NewSolver(ctx)
 	// 1.5 in IEEE 754 float32 is 0x3FC00000
@@ -310,7 +297,6 @@ func TestFloatConversions(t *testing.T) {
 
 func TestFloatNaN(t *testing.T) {
 	ctx := NewContext(nil)
-	sort := ctx.FloatSort(8, 24)
 	nan := ctx.FloatNaN(sort)
 
 	solver := NewSolver(ctx)
@@ -322,7 +308,6 @@ func TestFloatNaN(t *testing.T) {
 
 func TestFloatInf(t *testing.T) {
 	ctx := NewContext(nil)
-	sort := ctx.FloatSort(8, 24)
 	posInf := ctx.FloatInf(sort, false)
 	negInf := ctx.FloatInf(sort, true)
 
@@ -343,11 +328,10 @@ func TestFloatInf(t *testing.T) {
 
 func TestFromFloat32(t *testing.T) {
 	ctx := NewContext(nil)
-	sort := ctx.FloatSort(8, 24)
-	f := ctx.FromFloat32(2.5, sort)
+	f := ctx.Float32(2.5)
 
 	solver := NewSolver(ctx)
-	solver.Assert(f.Eq(ctx.FromFloat64(2.5, sort)))
+	solver.Assert(f.Eq(ctx.Float32FromFloat64(2.5)))
 	if sat, _ := solver.Check(); !sat {
 		t.Error("expected SAT for FromFloat32")
 	}
@@ -355,13 +339,12 @@ func TestFromFloat32(t *testing.T) {
 
 func TestBVToFloat(t *testing.T) {
 	ctx := NewContext(nil)
-	sort := ctx.FloatSort(8, 24)
 
 	// IEEEToFloat
 	bv := ctx.FromInt(0x3FC00000, ctx.BVSort(32)).(BV) // 1.5 in IEEE 754
 	f := bv.IEEEToFloat(sort)
 	solver := NewSolver(ctx)
-	solver.Assert(f.Eq(ctx.FromFloat64(1.5, sort)))
+	solver.Assert(f.Eq(ctx.Float32FromFloat64(1.5)))
 	if sat, _ := solver.Check(); !sat {
 		t.Error("expected SAT for IEEEToFloat")
 	}
@@ -370,7 +353,7 @@ func TestBVToFloat(t *testing.T) {
 	sBV := ctx.FromInt(-5, ctx.BVSort(8)).(BV)
 	sf := sBV.SToFloat(sort)
 	solver2 := NewSolver(ctx)
-	solver2.Assert(sf.Eq(ctx.FromFloat64(-5.0, sort)))
+	solver2.Assert(sf.Eq(ctx.Float32FromFloat64(-5.0)))
 	if sat, _ := solver2.Check(); !sat {
 		t.Error("expected SAT for SToFloat")
 	}
@@ -379,7 +362,7 @@ func TestBVToFloat(t *testing.T) {
 	uBV := ctx.FromInt(42, ctx.BVSort(8)).(BV)
 	uf := uBV.UToFloat(sort)
 	solver3 := NewSolver(ctx)
-	solver3.Assert(uf.Eq(ctx.FromFloat64(42.0, sort)))
+	solver3.Assert(uf.Eq(ctx.Float32FromFloat64(42.0)))
 	if sat, _ := solver3.Check(); !sat {
 		t.Error("expected SAT for UToFloat")
 	}

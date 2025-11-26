@@ -17,7 +17,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/aclements/go-z3/internal/ops"
+	"github.com/ralscha/go-z3/internal/ops"
 )
 
 func main() {
@@ -36,7 +36,7 @@ package st
 import (
 	"fmt"
 	"math/big"
-	"github.com/aclements/go-z3/z3"
+	"github.com/ralscha/go-z3/z3"
 )
 
 `)

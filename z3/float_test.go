@@ -73,7 +73,7 @@ func TestFloatFromBigIntRounding(t *testing.T) {
 
 func TestFloatRound(t *testing.T) {
 	ctx := NewContext(nil)
-	s := ctx.FloatSort(11, 53)
+	s := ctx.Float64Sort()
 	type test struct {
 		val float64
 		res [5]int64
@@ -96,7 +96,7 @@ func TestFloatRound(t *testing.T) {
 
 func TestFloatAsBigFloat(t *testing.T) {
 	ctx := NewContext(nil)
-	s := ctx.FloatSort(11, 53)
+	s := ctx.Float64Sort()
 	for _, test := range []float64{0, math.Copysign(0, -1), 42, -42,
 		math.Inf(1), math.Inf(-1),
 		math.MaxFloat64, -math.MaxFloat64,

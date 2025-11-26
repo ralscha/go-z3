@@ -10,7 +10,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/aclements/go-z3/z3"
+	"github.com/ralscha/go-z3/z3"
 )
 
 // TestEquivInt8 tests Int8 operations

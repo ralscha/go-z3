@@ -432,7 +432,7 @@ func TestBVToInt(t *testing.T) {
 
 	uintResult := x.UToInt()
 	solver := NewSolver(ctx)
-	solver.Assert(uintResult.Eq(ctx.FromInt(42, ctx.IntSort()).(Int)))
+	solver.Assert(uintResult.Eq(ctx.Int(42)))
 	if sat, _ := solver.Check(); !sat {
 		t.Error("expected SAT for UToInt(42) = 42")
 	}
@@ -440,7 +440,7 @@ func TestBVToInt(t *testing.T) {
 	y := ctx.FromInt(-1, ctx.BVSort(8)).(BV)
 	sintResult := y.SToInt()
 	solver2 := NewSolver(ctx)
-	solver2.Assert(sintResult.Eq(ctx.FromInt(-1, ctx.IntSort()).(Int)))
+	solver2.Assert(sintResult.Eq(ctx.Int(-1)))
 	if sat, _ := solver2.Check(); !sat {
 		t.Error("expected SAT for SToInt(-1) = -1")
 	}

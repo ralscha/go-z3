@@ -22,7 +22,7 @@ func TestCharToInt(t *testing.T) {
 
 	solver := NewSolver(ctx)
 	// ASCII 'A' = 65
-	solver.Assert(cInt.Eq(ctx.FromInt(65, ctx.IntSort()).(Int)))
+	solver.Assert(cInt.Eq(ctx.Int(65)))
 
 	if sat, _ := solver.Check(); !sat {
 		t.Error("expected SAT")
@@ -36,8 +36,8 @@ func TestCharLE(t *testing.T) {
 
 	solver := NewSolver(ctx)
 	solver.Assert(a.LE(b))
-	solver.Assert(a.ToInt().Eq(ctx.FromInt(65, ctx.IntSort()).(Int))) // 'A'
-	solver.Assert(b.ToInt().Eq(ctx.FromInt(66, ctx.IntSort()).(Int))) // 'B'
+	solver.Assert(a.ToInt().Eq(ctx.Int(65))) // 'A'
+	solver.Assert(b.ToInt().Eq(ctx.Int(66))) // 'B'
 
 	if sat, _ := solver.Check(); !sat {
 		t.Error("expected SAT for A <= B")
@@ -51,7 +51,7 @@ func TestIsDigit(t *testing.T) {
 	solver := NewSolver(ctx)
 	solver.Assert(c.IsDigit())
 	// Digits are '0'-'9' (48-57)
-	solver.Assert(c.ToInt().Eq(ctx.FromInt(53, ctx.IntSort()).(Int))) // '5'
+	solver.Assert(c.ToInt().Eq(ctx.Int(53))) // '5'
 
 	if sat, _ := solver.Check(); !sat {
 		t.Error("expected SAT for digit '5'")
@@ -60,7 +60,7 @@ func TestIsDigit(t *testing.T) {
 	// Non-digit should fail
 	solver2 := NewSolver(ctx)
 	solver2.Assert(c.IsDigit())
-	solver2.Assert(c.ToInt().Eq(ctx.FromInt(65, ctx.IntSort()).(Int))) // 'A'
+	solver2.Assert(c.ToInt().Eq(ctx.Int(65))) // 'A'
 
 	if sat, _ := solver2.Check(); sat {
 		t.Error("expected UNSAT for non-digit 'A'")
@@ -73,7 +73,7 @@ func TestCharToBV(t *testing.T) {
 	bv := c.ToBV()
 
 	solver := NewSolver(ctx)
-	solver.Assert(c.ToInt().Eq(ctx.FromInt(65, ctx.IntSort()).(Int)))
+	solver.Assert(c.ToInt().Eq(ctx.Int(65)))
 
 	if sat, _ := solver.Check(); !sat {
 		t.Error("expected SAT")
@@ -95,7 +95,7 @@ func TestToCode(t *testing.T) {
 	code := s.ToCode()
 
 	solver := NewSolver(ctx)
-	solver.Assert(code.Eq(ctx.FromInt(65, ctx.IntSort()).(Int)))
+	solver.Assert(code.Eq(ctx.Int(65)))
 
 	if sat, _ := solver.Check(); !sat {
 		t.Error("expected SAT for ToCode('A') = 65")
@@ -104,7 +104,7 @@ func TestToCode(t *testing.T) {
 
 func TestStringFromCode(t *testing.T) {
 	ctx := NewContext(nil)
-	code := ctx.FromInt(65, ctx.IntSort()).(Int)
+	code := ctx.Int(65)
 	s := ctx.StringFromCode(code)
 
 	solver := NewSolver(ctx)
