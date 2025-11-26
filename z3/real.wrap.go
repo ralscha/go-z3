@@ -30,7 +30,6 @@ func (l Real) NE(r Real) Bool {
 // Div returns l / r.
 //
 // If r is 0, the result is unconstrained.
-//
 func (l Real) Div(r Real) Real {
 	// Generated from real.go:124.
 	ctx := l.ctx
@@ -45,7 +44,6 @@ func (l Real) Div(r Real) Real {
 // ToInt returns the floor of l as sort Int.
 //
 // Note that this is not truncation. For example, ToInt(-1.3) is -2.
-//
 func (l Real) ToInt() Int {
 	// Generated from real.go:130.
 	ctx := l.ctx
@@ -57,7 +55,6 @@ func (l Real) ToInt() Int {
 }
 
 // IsInt returns a Value that is true if l has no fractional part.
-//
 func (l Real) IsInt() Bool {
 	// Generated from real.go:134.
 	ctx := l.ctx
@@ -72,7 +69,6 @@ func (l Real) IsInt() Bool {
 //
 // If necessary, the result will be rounded according to the current
 // rounding mode.
-//
 func (l Real) ToFloat(s Sort) Float {
 	// Generated from real.go:141.
 	ctx := l.ctx
@@ -89,7 +85,6 @@ func (l Real) ToFloat(s Sort) Float {
 //
 // If necessary, the result will be rounded according to the current
 // rounding mode.
-//
 func (l Real) ToFloatExp(exp Int, s Sort) Float {
 	// Generated from real.go:148.
 	ctx := l.ctx
@@ -104,7 +99,6 @@ func (l Real) ToFloatExp(exp Int, s Sort) Float {
 }
 
 // Abs returns the absolute value of l.
-//
 func (l Real) Abs() Real {
 	// Generated from real.go:152.
 	ctx := l.ctx
@@ -116,7 +110,6 @@ func (l Real) Abs() Real {
 }
 
 // Add returns the sum l + r[0] + r[1] + ...
-//
 func (l Real) Add(r ...Real) Real {
 	// Generated from intreal.go:12.
 	ctx := l.ctx
@@ -133,7 +126,6 @@ func (l Real) Add(r ...Real) Real {
 }
 
 // Mul returns the product l * r[0] * r[1] * ...
-//
 func (l Real) Mul(r ...Real) Real {
 	// Generated from intreal.go:16.
 	ctx := l.ctx
@@ -150,7 +142,6 @@ func (l Real) Mul(r ...Real) Real {
 }
 
 // Sub returns l - r[0] - r[1] - ...
-//
 func (l Real) Sub(r ...Real) Real {
 	// Generated from intreal.go:20.
 	ctx := l.ctx
@@ -167,7 +158,6 @@ func (l Real) Sub(r ...Real) Real {
 }
 
 // Neg returns -l.
-//
 func (l Real) Neg() Real {
 	// Generated from intreal.go:24.
 	ctx := l.ctx
@@ -179,7 +169,6 @@ func (l Real) Neg() Real {
 }
 
 // Exp returns lᶠ.
-//
 func (l Real) Exp(r Real) Real {
 	// Generated from intreal.go:28.
 	ctx := l.ctx
@@ -192,7 +181,6 @@ func (l Real) Exp(r Real) Real {
 }
 
 // LT returns l < r.
-//
 func (l Real) LT(r Real) Bool {
 	// Generated from intreal.go:32.
 	ctx := l.ctx
@@ -205,7 +193,6 @@ func (l Real) LT(r Real) Bool {
 }
 
 // LE returns l <= r.
-//
 func (l Real) LE(r Real) Bool {
 	// Generated from intreal.go:36.
 	ctx := l.ctx
@@ -218,7 +205,6 @@ func (l Real) LE(r Real) Bool {
 }
 
 // GT returns l > r.
-//
 func (l Real) GT(r Real) Bool {
 	// Generated from intreal.go:40.
 	ctx := l.ctx
@@ -231,7 +217,6 @@ func (l Real) GT(r Real) Bool {
 }
 
 // GE returns l >= r.
-//
 func (l Real) GE(r Real) Bool {
 	// Generated from intreal.go:44.
 	ctx := l.ctx

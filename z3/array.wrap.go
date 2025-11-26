@@ -31,7 +31,6 @@ func (l Array) NE(r Array) Bool {
 //
 // i's sort must match x's domain. The result has the sort of x's
 // range.
-//
 func (x Array) Select(i Value) Value {
 	// Generated from array.go:63.
 	ctx := x.ctx
@@ -48,7 +47,6 @@ func (x Array) Select(i Value) Value {
 //
 // i's sort must match x's domain and v's sort must match x's range.
 // The result has the same sort as x.
-//
 func (x Array) Store(i Value, v Value) Array {
 	// Generated from array.go:71.
 	ctx := x.ctx
@@ -65,7 +63,6 @@ func (x Array) Store(i Value, v Value) Array {
 // be represented as finite maps plus a default value.
 //
 // This is useful for extracting array values interpreted by models.
-//
 func (x Array) Default() Value {
 	// Generated from array.go:78.
 	ctx := x.ctx
@@ -78,7 +75,6 @@ func (x Array) Default() Value {
 
 // Ext returns an index at which arrays x and y differ.
 // If x and y are equal, the result is unconstrained.
-//
 func (x Array) Ext(y Array) Value {
 	// Generated from array.go:83.
 	ctx := x.ctx

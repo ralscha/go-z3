@@ -28,7 +28,6 @@ func (l BV) NE(r BV) Bool {
 }
 
 // Not returns the bit-wise negation of l.
-//
 func (l BV) Not() BV {
 	// Generated from bv.go:117.
 	ctx := l.ctx
@@ -41,7 +40,6 @@ func (l BV) Not() BV {
 
 // AllBits returns a 1-bit bit-vector that is the bit-wise "and" of
 // all bits.
-//
 func (l BV) AllBits() BV {
 	// Generated from bv.go:122.
 	ctx := l.ctx
@@ -54,7 +52,6 @@ func (l BV) AllBits() BV {
 
 // AnyBits returns a 1-bit bit-vector that is the bit-wise "or" of all
 // bits.
-//
 func (l BV) AnyBits() BV {
 	// Generated from bv.go:127.
 	ctx := l.ctx
@@ -68,7 +65,6 @@ func (l BV) AnyBits() BV {
 // And returns the bit-wise and of l and r.
 //
 // l and r must have the same size.
-//
 func (l BV) And(r BV) BV {
 	// Generated from bv.go:133.
 	ctx := l.ctx
@@ -83,7 +79,6 @@ func (l BV) And(r BV) BV {
 // Or returns the bit-wise or of l and r.
 //
 // l and r must have the same size.
-//
 func (l BV) Or(r BV) BV {
 	// Generated from bv.go:139.
 	ctx := l.ctx
@@ -98,7 +93,6 @@ func (l BV) Or(r BV) BV {
 // Xor returns the bit-wise xor of l and r.
 //
 // l and r must have the same size.
-//
 func (l BV) Xor(r BV) BV {
 	// Generated from bv.go:145.
 	ctx := l.ctx
@@ -113,7 +107,6 @@ func (l BV) Xor(r BV) BV {
 // Nand returns the bit-wise nand of l and r.
 //
 // l and r must have the same size.
-//
 func (l BV) Nand(r BV) BV {
 	// Generated from bv.go:151.
 	ctx := l.ctx
@@ -128,7 +121,6 @@ func (l BV) Nand(r BV) BV {
 // Nor returns the bit-wise nor of l and r.
 //
 // l and r must have the same size.
-//
 func (l BV) Nor(r BV) BV {
 	// Generated from bv.go:157.
 	ctx := l.ctx
@@ -143,7 +135,6 @@ func (l BV) Nor(r BV) BV {
 // Xnor returns the bit-wise xnor of l and r.
 //
 // l and r must have the same size.
-//
 func (l BV) Xnor(r BV) BV {
 	// Generated from bv.go:163.
 	ctx := l.ctx
@@ -156,7 +147,6 @@ func (l BV) Xnor(r BV) BV {
 }
 
 // Neg returns the two's complement negation of l.
-//
 func (l BV) Neg() BV {
 	// Generated from bv.go:167.
 	ctx := l.ctx
@@ -170,7 +160,6 @@ func (l BV) Neg() BV {
 // Add returns the two's complement sum of l and r.
 //
 // l and r must have the same size.
-//
 func (l BV) Add(r BV) BV {
 	// Generated from bv.go:173.
 	ctx := l.ctx
@@ -185,7 +174,6 @@ func (l BV) Add(r BV) BV {
 // Sub returns the two's complement subtraction l minus r.
 //
 // l and r must have the same size.
-//
 func (l BV) Sub(r BV) BV {
 	// Generated from bv.go:179.
 	ctx := l.ctx
@@ -200,7 +188,6 @@ func (l BV) Sub(r BV) BV {
 // Mul returns the two's complement product of l and r.
 //
 // l and r must have the same size.
-//
 func (l BV) Mul(r BV) BV {
 	// Generated from bv.go:185.
 	ctx := l.ctx
@@ -217,7 +204,6 @@ func (l BV) Mul(r BV) BV {
 // If r is 0, the result is unconstrained.
 //
 // l and r must have the same size.
-//
 func (l BV) UDiv(r BV) BV {
 	// Generated from bv.go:193.
 	ctx := l.ctx
@@ -235,7 +221,6 @@ func (l BV) UDiv(r BV) BV {
 // If r is 0, the result is unconstrained.
 //
 // l and r must have the same size.
-//
 func (l BV) SDiv(r BV) BV {
 	// Generated from bv.go:202.
 	ctx := l.ctx
@@ -250,7 +235,6 @@ func (l BV) SDiv(r BV) BV {
 // URem returns the unsigned remainder of l divided by r.
 //
 // l and r must have the same size.
-//
 func (l BV) URem(r BV) BV {
 	// Generated from bv.go:208.
 	ctx := l.ctx
@@ -267,7 +251,6 @@ func (l BV) URem(r BV) BV {
 // The sign of the result follows the sign of l.
 //
 // l and r must have the same size.
-//
 func (l BV) SRem(r BV) BV {
 	// Generated from bv.go:216.
 	ctx := l.ctx
@@ -284,7 +267,6 @@ func (l BV) SRem(r BV) BV {
 // The sign of the result follows the sign of r.
 //
 // l and r must have the same size.
-//
 func (l BV) SMod(r BV) BV {
 	// Generated from bv.go:224.
 	ctx := l.ctx
@@ -299,7 +281,6 @@ func (l BV) SMod(r BV) BV {
 // ULT returns the l < r, where l and r are unsigned.
 //
 // l and r must have the same size.
-//
 func (l BV) ULT(r BV) Bool {
 	// Generated from bv.go:230.
 	ctx := l.ctx
@@ -314,7 +295,6 @@ func (l BV) ULT(r BV) Bool {
 // SLT returns the l < r, where l and r are signed.
 //
 // l and r must have the same size.
-//
 func (l BV) SLT(r BV) Bool {
 	// Generated from bv.go:236.
 	ctx := l.ctx
@@ -329,7 +309,6 @@ func (l BV) SLT(r BV) Bool {
 // ULE returns the l <= r, where l and r are unsigned.
 //
 // l and r must have the same size.
-//
 func (l BV) ULE(r BV) Bool {
 	// Generated from bv.go:242.
 	ctx := l.ctx
@@ -344,7 +323,6 @@ func (l BV) ULE(r BV) Bool {
 // SLE returns the l <= r, where l and r are signed.
 //
 // l and r must have the same size.
-//
 func (l BV) SLE(r BV) Bool {
 	// Generated from bv.go:248.
 	ctx := l.ctx
@@ -359,7 +337,6 @@ func (l BV) SLE(r BV) Bool {
 // UGE returns the l >= r, where l and r are unsigned.
 //
 // l and r must have the same size.
-//
 func (l BV) UGE(r BV) Bool {
 	// Generated from bv.go:254.
 	ctx := l.ctx
@@ -374,7 +351,6 @@ func (l BV) UGE(r BV) Bool {
 // SGE returns the l >= r, where l and r are signed.
 //
 // l and r must have the same size.
-//
 func (l BV) SGE(r BV) Bool {
 	// Generated from bv.go:260.
 	ctx := l.ctx
@@ -389,7 +365,6 @@ func (l BV) SGE(r BV) Bool {
 // UGT returns the l > r, where l and r are unsigned.
 //
 // l and r must have the same size.
-//
 func (l BV) UGT(r BV) Bool {
 	// Generated from bv.go:266.
 	ctx := l.ctx
@@ -404,7 +379,6 @@ func (l BV) UGT(r BV) Bool {
 // SGT returns the l > r, where l and r are signed.
 //
 // l and r must have the same size.
-//
 func (l BV) SGT(r BV) Bool {
 	// Generated from bv.go:272.
 	ctx := l.ctx
@@ -420,7 +394,6 @@ func (l BV) SGT(r BV) Bool {
 //
 // The result is a bit-vector whose length is the sum of the lengths
 // of l and r.
-//
 func (l BV) Concat(r BV) BV {
 	// Generated from bv.go:279.
 	ctx := l.ctx
@@ -434,7 +407,6 @@ func (l BV) Concat(r BV) BV {
 
 // Extract returns bits [high, low] (inclusive) of l, where bit 0 is
 // the least significant bit.
-//
 func (l BV) Extract(high int, low int) BV {
 	// Generated from bv.go:284.
 	ctx := l.ctx
@@ -447,7 +419,6 @@ func (l BV) Extract(high int, low int) BV {
 
 // SignExtend returns l sign-extended to a bit-vector of length m+i,
 // where m is the length of l.
-//
 func (l BV) SignExtend(i int) BV {
 	// Generated from bv.go:289.
 	ctx := l.ctx
@@ -460,7 +431,6 @@ func (l BV) SignExtend(i int) BV {
 
 // ZeroExtend returns l zero-extended to a bit-vector of length m+i,
 // where m is the length of l.
-//
 func (l BV) ZeroExtend(i int) BV {
 	// Generated from bv.go:294.
 	ctx := l.ctx
@@ -472,7 +442,6 @@ func (l BV) ZeroExtend(i int) BV {
 }
 
 // Repeat returns l repeated up to length i.
-//
 func (l BV) Repeat(i int) BV {
 	// Generated from bv.go:298.
 	ctx := l.ctx
@@ -484,7 +453,6 @@ func (l BV) Repeat(i int) BV {
 }
 
 // Bit2Bool extracts the bit at position i of l and yields a boolean.
-//
 func (l BV) Bit2Bool(i int) Bool {
 	// Generated from bv.go:302.
 	ctx := l.ctx
@@ -500,7 +468,6 @@ func (l BV) Bit2Bool(i int) Bool {
 // This is equivalent to l * 2^i.
 //
 // l and i must have the same size. The result has the same sort.
-//
 func (l BV) Lsh(i BV) BV {
 	// Generated from bv.go:310.
 	ctx := l.ctx
@@ -517,7 +484,6 @@ func (l BV) Lsh(i BV) BV {
 // This is equivalent to l / 2^i, where l and i are unsigned.
 //
 // l and i must have the same size. The result has the same sort.
-//
 func (l BV) URsh(i BV) BV {
 	// Generated from bv.go:318.
 	ctx := l.ctx
@@ -534,7 +500,6 @@ func (l BV) URsh(i BV) BV {
 // This is like URsh, but the sign of the result is the sign of l.
 //
 // l and i must have the same size. The result has the same sort.
-//
 func (l BV) SRsh(i BV) BV {
 	// Generated from bv.go:326.
 	ctx := l.ctx
@@ -549,7 +514,6 @@ func (l BV) SRsh(i BV) BV {
 // RotateLeft returns l rotated left by i bits.
 //
 // l and i must have the same size.
-//
 func (l BV) RotateLeft(i BV) BV {
 	// Generated from bv.go:332.
 	ctx := l.ctx
@@ -564,7 +528,6 @@ func (l BV) RotateLeft(i BV) BV {
 // RotateRight returns l rotated right by i bits.
 //
 // l and i must have the same size.
-//
 func (l BV) RotateRight(i BV) BV {
 	// Generated from bv.go:338.
 	ctx := l.ctx
@@ -577,7 +540,6 @@ func (l BV) RotateRight(i BV) BV {
 }
 
 // SToInt converts signed bit-vector l to an integer.
-//
 func (l BV) SToInt() Int {
 	// Generated from bv.go:342.
 	ctx := l.ctx
@@ -589,7 +551,6 @@ func (l BV) SToInt() Int {
 }
 
 // UToInt converts unsigned bit-vector l to an integer.
-//
 func (l BV) UToInt() Int {
 	// Generated from bv.go:346.
 	ctx := l.ctx
@@ -604,7 +565,6 @@ func (l BV) UToInt() Int {
 // in IEEE 754-2008 format.
 //
 // The size of l must equal ebits+sbits of s.
-//
 func (l BV) IEEEToFloat(s Sort) Float {
 	// Generated from bv.go:353.
 	ctx := l.ctx
@@ -620,7 +580,6 @@ func (l BV) IEEEToFloat(s Sort) Float {
 //
 // If necessary, the result will be rounded according to the current
 // rounding mode.
-//
 func (l BV) SToFloat(s Sort) Float {
 	// Generated from bv.go:360.
 	ctx := l.ctx
@@ -637,7 +596,6 @@ func (l BV) SToFloat(s Sort) Float {
 //
 // If necessary, the result will be rounded according to the current
 // rounding mode.
-//
 func (l BV) UToFloat(s Sort) Float {
 	// Generated from bv.go:367.
 	ctx := l.ctx
@@ -652,7 +610,6 @@ func (l BV) UToFloat(s Sort) Float {
 
 // AddNoUnderflow returns a predicate that is true if the signed
 // addition of l and r does not underflow.
-//
 func (l BV) AddNoUnderflow(r BV) Bool {
 	// Generated from bv.go:385.
 	ctx := l.ctx
@@ -666,7 +623,6 @@ func (l BV) AddNoUnderflow(r BV) Bool {
 
 // SubNoOverflow returns a predicate that is true if the signed
 // subtraction of l and r does not overflow.
-//
 func (l BV) SubNoOverflow(r BV) Bool {
 	// Generated from bv.go:390.
 	ctx := l.ctx
@@ -680,7 +636,6 @@ func (l BV) SubNoOverflow(r BV) Bool {
 
 // MulNoUnderflow returns a predicate that is true if the signed
 // multiplication of l and r does not underflow.
-//
 func (l BV) MulNoUnderflow(r BV) Bool {
 	// Generated from bv.go:421.
 	ctx := l.ctx
@@ -694,7 +649,6 @@ func (l BV) MulNoUnderflow(r BV) Bool {
 
 // SDivNoOverflow returns a predicate that is true if the signed
 // division of l and r does not overflow.
-//
 func (l BV) SDivNoOverflow(r BV) Bool {
 	// Generated from bv.go:426.
 	ctx := l.ctx
@@ -708,7 +662,6 @@ func (l BV) SDivNoOverflow(r BV) Bool {
 
 // NegNoOverflow returns a predicate that is true if the negation
 // of l does not overflow (when l is interpreted as signed).
-//
 func (l BV) NegNoOverflow() Bool {
 	// Generated from bv.go:431.
 	ctx := l.ctx

@@ -5,10 +5,9 @@ Installation
 ============
 
 First, follow the instructions to
-[download and install](https://github.com/Z3Prover/z3/blob/master/README.md)
-the Z3 C library.
+[download and install](https://github.com/Z3Prover/z3/blob/master/README.md) the Z3 C library.
 
-go-z3 requires Z3 version 4.7.1 or later.
+go-z3 requires Z3 version 4.15.4 or later.
 
 If you installed the C library to a non-default location (such as a
 directory under `$HOME`), set the following environment variables:
@@ -23,10 +22,5 @@ export LD_LIBRARY_PATH=$Z3PREFIX/lib
 Then download and build go-z3:
 
 ```sh
-go get -u github.com/aclements/go-z3/z3
+go get -u github.com/ralscha/go-z3/z3
 ```
-
-Documentation
-=============
-
-See [pkg.go.dev](https://pkg.go.dev/github.com/aclements/go-z3/z3).

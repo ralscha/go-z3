@@ -30,7 +30,6 @@ func (l Bool) NE(r Bool) Bool {
 // Distinct returns a Value that is true if no two vals are equal.
 //
 // All Values must have the same sort.
-//
 func (ctx *Context) Distinct(vals ...Value) Bool {
 	// Generated from logic.go:68.
 	cargs := make([]C.Z3_ast, len(vals)+0)
@@ -45,7 +44,6 @@ func (ctx *Context) Distinct(vals ...Value) Bool {
 }
 
 // Not returns the boolean negation of l.
-//
 func (l Bool) Not() Bool {
 	// Generated from logic.go:72.
 	ctx := l.ctx
@@ -61,7 +59,6 @@ func (l Bool) Not() Bool {
 //
 // cons and alt must have the same sort. The result will have the same
 // sort as cons and alt.
-//
 func (cond Bool) IfThenElse(cons Value, alt Value) Value {
 	// Generated from logic.go:80.
 	ctx := cond.ctx
@@ -76,7 +73,6 @@ func (cond Bool) IfThenElse(cons Value, alt Value) Value {
 
 // Iff returns a Value that is true if l and r are equal (l
 // if-and-only-if r).
-//
 func (l Bool) Iff(r Bool) Bool {
 	// Generated from logic.go:85.
 	ctx := l.ctx
@@ -89,7 +85,6 @@ func (l Bool) Iff(r Bool) Bool {
 }
 
 // Implies returns a Value that is true if l implies r.
-//
 func (l Bool) Implies(r Bool) Bool {
 	// Generated from logic.go:89.
 	ctx := l.ctx
@@ -102,7 +97,6 @@ func (l Bool) Implies(r Bool) Bool {
 }
 
 // Xor returns a Value that is true if l xor r.
-//
 func (l Bool) Xor(r Bool) Bool {
 	// Generated from logic.go:93.
 	ctx := l.ctx
@@ -115,7 +109,6 @@ func (l Bool) Xor(r Bool) Bool {
 }
 
 // And returns a Value that is true if l and all arguments are true.
-//
 func (l Bool) And(r ...Bool) Bool {
 	// Generated from logic.go:97.
 	ctx := l.ctx
@@ -132,7 +125,6 @@ func (l Bool) And(r ...Bool) Bool {
 }
 
 // Or returns a Value that is true if l or any argument is true.
-//
 func (l Bool) Or(r ...Bool) Bool {
 	// Generated from logic.go:101.
 	ctx := l.ctx
