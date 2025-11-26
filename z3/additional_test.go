@@ -574,7 +574,8 @@ func TestREPower(t *testing.T) {
 func TestREEmpty(t *testing.T) {
 	ctx := NewContext(nil)
 	strSort := ctx.StringSort()
-	empty := ctx.REEmpty(strSort)
+	reSort := ctx.RESort(strSort)
+	empty := ctx.REEmpty(reSort)
 
 	solver := NewSolver(ctx)
 	solver.Assert(ctx.FromString("").InRE(empty).Not())
@@ -586,7 +587,8 @@ func TestREEmpty(t *testing.T) {
 func TestREFull(t *testing.T) {
 	ctx := NewContext(nil)
 	strSort := ctx.StringSort()
-	full := ctx.REFull(strSort)
+	reSort := ctx.RESort(strSort)
+	full := ctx.REFull(reSort)
 
 	solver := NewSolver(ctx)
 	solver.Assert(ctx.FromString("anything").InRE(full))
@@ -598,7 +600,8 @@ func TestREFull(t *testing.T) {
 func TestREAllChar(t *testing.T) {
 	ctx := NewContext(nil)
 	strSort := ctx.StringSort()
-	allChar := ctx.REAllChar(strSort)
+	reSort := ctx.RESort(strSort)
+	allChar := ctx.REAllChar(reSort)
 
 	solver := NewSolver(ctx)
 	solver.Assert(ctx.FromString("x").InRE(allChar))
