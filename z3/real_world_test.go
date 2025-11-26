@@ -155,7 +155,7 @@ func TestXKCD287(t *testing.T) {
 	// Sum of (quantity * price) must equal total
 	var sumTerms []Int
 	for i, price := range prices {
-		priceVal := ctx.Int(price)
+		priceVal := ctx.Int64(price)
 		sumTerms = append(sumTerms, quantities[i].Mul(priceVal))
 	}
 
@@ -164,7 +164,7 @@ func TestXKCD287(t *testing.T) {
 	for i := 1; i < len(sumTerms); i++ {
 		totalSum = totalSum.Add(sumTerms[i])
 	}
-	solver.Assert(totalSum.Eq(ctx.Int(total)))
+	solver.Assert(totalSum.Eq(ctx.Int64(total)))
 
 	// Find all solutions
 	solutions := 0
@@ -191,7 +191,7 @@ func TestXKCD287(t *testing.T) {
 				t.Logf("  %d x %s = $%.2f", qtyVal, name, float64(qtyVal)*float64(prices[i])/100.0)
 			}
 			// Add constraint to exclude this solution
-			blocking = append(blocking, quantities[i].NE(ctx.Int(qtyVal)))
+			blocking = append(blocking, quantities[i].NE(ctx.Int64(qtyVal)))
 		}
 
 		// Add constraint to find different solutions
@@ -388,7 +388,7 @@ func TestSkisAssignment(t *testing.T) {
 	skierHeights := []int64{3, 4, 7, 11, 18}
 
 	zero := ctx.Int(0)
-	numSkis := ctx.Int(int64(len(skiSizes)))
+	numSkis := ctx.Int(len(skiSizes))
 
 	// Create assignment variables: assignments[i] = ski index for skier i
 	assignments := make([]Int, len(skierHeights))
@@ -422,8 +422,8 @@ func TestSkisAssignment(t *testing.T) {
 			if diff < 0 {
 				diff = -diff
 			}
-			diffVal := ctx.Int(diff)
-			jVal := ctx.Int(int64(j))
+			diffVal := ctx.Int64(diff)
+			jVal := ctx.Int(j)
 			// If assignment == j, then disparity == |diff|
 			opt.Assert(assignments[i].Eq(jVal).Implies(disparity.Eq(diffVal)))
 		}
@@ -499,7 +499,7 @@ func TestOrganizeYourDay(t *testing.T) {
 	for i := range tasks {
 		task := &tasks[i]
 		duration := durations[task]
-		durationVal := ctx.Int(duration)
+		durationVal := ctx.Int64(duration)
 		solver.Assert(tasks[i].GE(nine))
 		solver.Assert(tasks[i].Add(durationVal).LE(seventeen))
 	}
@@ -509,8 +509,8 @@ func TestOrganizeYourDay(t *testing.T) {
 		for j := i + 1; j < len(tasks); j++ {
 			task1 := &tasks[i]
 			task2 := &tasks[j]
-			duration1 := ctx.Int(durations[task1])
-			duration2 := ctx.Int(durations[task2])
+			duration1 := ctx.Int64(durations[task1])
+			duration2 := ctx.Int64(durations[task2])
 			// task1 finishes before task2 starts OR task2 finishes before task1 starts
 			solver.Assert(
 				tasks[i].Add(duration1).LE(tasks[j]).Or(
@@ -640,7 +640,7 @@ func TestSudoku(t *testing.T) {
 	for i := 0; i < 9; i++ {
 		for j := 0; j < 9; j++ {
 			if puzzle[i][j] != 0 {
-				solver.Assert(cells[i][j].Eq(ctx.Int(int64(puzzle[i][j]))))
+				solver.Assert(cells[i][j].Eq(ctx.Int(puzzle[i][j])))
 			}
 		}
 	}
@@ -687,7 +687,7 @@ func TestNQueens(t *testing.T) {
 		queens[i] = ctx.IntConst("queen_" + string(rune('0'+i)))
 		// Each queen is in a valid column (0 to n-1)
 		solver.Assert(queens[i].GE(ctx.Int(0)))
-		solver.Assert(queens[i].LT(ctx.Int(int64(n))))
+		solver.Assert(queens[i].LT(ctx.Int(n)))
 	}
 
 	// No two queens in the same column
@@ -701,7 +701,7 @@ func TestNQueens(t *testing.T) {
 	for i := 0; i < n; i++ {
 		for j := i + 1; j < n; j++ {
 			// |queens[i] - queens[j]| != |i - j|
-			diff := int64(j - i)
+			diff := j - i
 			diffVal := ctx.Int(diff)
 			negDiffVal := ctx.Int(-diff)
 			// queens[j] - queens[i] != diff AND queens[j] - queens[i] != -diff
@@ -743,10 +743,10 @@ func TestMagicSquare(t *testing.T) {
 	solver := NewSolver(ctx)
 
 	n := 3
-	magicSum := int64(15) // For 3x3, the magic constant is 15
+	magicSum := 15 // For 3x3, the magic constant is 15
 
 	one := ctx.Int(1)
-	nine := ctx.Int(int64(n * n))
+	nine := ctx.Int(n * n)
 	target := ctx.Int(magicSum)
 
 	// Create n x n grid
@@ -833,7 +833,7 @@ func TestGraphColoring(t *testing.T) {
 	// Edges: 0-1, 1-2, 2-3, 3-0, 0-2 (diagonal)
 	numVertices := 4
 	edges := [][2]int{{0, 1}, {1, 2}, {2, 3}, {3, 0}, {0, 2}}
-	numColors := int64(3) // Try with 3 colors
+	numColors := 3 // Try with 3 colors
 
 	zero := ctx.Int(0)
 	maxColor := ctx.Int(numColors - 1)
@@ -888,7 +888,7 @@ func TestKnapsack(t *testing.T) {
 		{"snacks", 1, 2},
 		{"headphones", 1, 4},
 	}
-	capacity := int64(6)
+	capacity := 6
 
 	zero := ctx.Int(0)
 	one := ctx.Int(1)
@@ -903,16 +903,16 @@ func TestKnapsack(t *testing.T) {
 	}
 
 	// Total weight constraint
-	weightSum := take[0].Mul(ctx.Int(items[0].weight))
+	weightSum := take[0].Mul(ctx.Int64(items[0].weight))
 	for i := 1; i < len(items); i++ {
-		weightSum = weightSum.Add(take[i].Mul(ctx.Int(items[i].weight)))
+		weightSum = weightSum.Add(take[i].Mul(ctx.Int64(items[i].weight)))
 	}
 	opt.Assert(weightSum.LE(capVal))
 
 	// Maximize total value
-	valueSum := take[0].Mul(ctx.Int(items[0].value))
+	valueSum := take[0].Mul(ctx.Int64(items[0].value))
 	for i := 1; i < len(items); i++ {
-		valueSum = valueSum.Add(take[i].Mul(ctx.Int(items[i].value)))
+		valueSum = valueSum.Add(take[i].Mul(ctx.Int64(items[i].value)))
 	}
 	obj := opt.Maximize(valueSum)
 
