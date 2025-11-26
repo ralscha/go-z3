@@ -38,12 +38,31 @@ go get github.com/ralscha/go-z3/z3
 
 3. Set the required environment variables (adjust paths as needed):
 
+**Command Prompt (cmd.exe):**
+```cmd
+SET CGO_ENABLED=1
+SET CGO_CFLAGS=-IC:/path/to/z3/include
+SET CGO_LDFLAGS=-LC:/path/to/z3/bin -lz3
+SET PATH=C:/path/to/mingw64/bin;C:/path/to/z3/bin;%PATH%
+SET CC=C:/path/to/mingw64/bin/gcc.exe
+```
+
+**PowerShell:**
+```powershell
+$env:CGO_ENABLED = "1"
+$env:CGO_CFLAGS = "-IC:/path/to/z3/include"
+$env:CGO_LDFLAGS = "-LC:/path/to/z3/bin -lz3"
+$env:PATH = "C:/path/to/mingw64/bin;C:/path/to/z3/bin;$env:PATH"
+$env:CC = "C:/path/to/mingw64/bin/gcc.exe"
+```
+
+**Git Bash / MSYS2:**
 ```sh
 export CGO_ENABLED=1
-export CGO_CFLAGS="-I/path/to/z3/include"
-export CGO_LDFLAGS="-L/path/to/z3/bin -lz3"
-export PATH="/path/to/mingw64/bin:/path/to/z3/bin:$PATH"
-export CC="/path/to/mingw64/bin/gcc.exe"
+export CGO_CFLAGS="-I/c/path/to/z3/include"
+export CGO_LDFLAGS="-L/c/path/to/z3/bin -lz3"
+export PATH="/c/path/to/mingw64/bin:/c/path/to/z3/bin:$PATH"
+export CC="/c/path/to/mingw64/bin/gcc.exe"
 ```
 
 4. Install go-z3:
@@ -90,3 +109,5 @@ func main() {
 	}
 }
 ```
+
+For more practical examples including Sudoku solving, N-Queens, and other constraint satisfaction problems, see [real_world_test.go](z3/real_world_test.go).
