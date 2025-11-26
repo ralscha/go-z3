@@ -152,7 +152,7 @@ func TestIntToBV(t *testing.T) {
 func TestIntAsUint64(t *testing.T) {
 	ctx := NewContext(nil)
 	x := ctx.FromInt(42, ctx.IntSort()).(Int)
-	val, ok := x.AsUint64()
+	val, _, ok := x.AsUint64()
 	if !ok {
 		t.Error("expected ok for AsUint64")
 	}

@@ -695,7 +695,7 @@ func TestOptimizeAssertAndTrack(t *testing.T) {
 
 	opt.AssertAndTrack(x, tracker)
 
-	if sat := opt.Check(); !sat {
+	if sat, _ := opt.Check(); !sat {
 		t.Error("expected SAT")
 	}
 }
@@ -725,7 +725,7 @@ func TestOptimizeUnsatCore(t *testing.T) {
 	opt.AssertAndTrack(x, t1)
 	opt.AssertAndTrack(x.Not(), t2)
 
-	sat := opt.Check()
+	sat, _ := opt.Check()
 	if sat {
 		t.Error("expected UNSAT")
 	}
@@ -740,10 +740,7 @@ func TestOptimizeFromString(t *testing.T) {
 	ctx := NewContext(nil)
 	opt := NewOptimize(ctx)
 
-	err := opt.FromString("(declare-const x Int)\n(assert (> x 0))\n(minimize x)")
-	if err != nil {
-		t.Errorf("FromString failed: %v", err)
-	}
+	opt.FromString("(declare-const x Int)\n(assert (> x 0))\n(minimize x)")
 }
 
 func TestOptimizeHelp(t *testing.T) {
