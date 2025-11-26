@@ -84,7 +84,8 @@ func (l Char) ToInt() Int {
 	return Int(val)
 }
 
-// ToBV returns the character l as an 8-bit bit-vector.
+// ToBV returns the character l as a bit-vector.
+// The bit-vector size depends on Z3's encoding setting (default: 18 bits for Unicode).
 func (l Char) ToBV() BV {
 	ctx := l.ctx
 	val := wrapValue(ctx, func() C.Z3_ast {
@@ -94,7 +95,8 @@ func (l Char) ToBV() BV {
 	return BV(val)
 }
 
-// CharFromBV creates a character from an 8-bit bit-vector.
+// CharFromBV creates a character from a bit-vector.
+// The bit-vector size must match Z3's encoding setting (default: 18 bits for Unicode).
 func (ctx *Context) CharFromBV(bv BV) Char {
 	val := wrapValue(ctx, func() C.Z3_ast {
 		return C.Z3_mk_char_from_bv(ctx.c, bv.c)

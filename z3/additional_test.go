@@ -680,7 +680,8 @@ func TestCharConst(t *testing.T) {
 func TestCharFromBV(t *testing.T) {
 	ctx := NewContext(nil)
 	// Create a BV with value 65 (ASCII 'A')
-	bv := ctx.FromInt(65, ctx.BVSort(21)).(BV) // Char is typically 21 bits in Z3
+	// Z3 uses 18-bit BVs for characters in Unicode mode (default)
+	bv := ctx.FromInt(65, ctx.BVSort(18)).(BV)
 	c := ctx.CharFromBV(bv)
 
 	solver := NewSolver(ctx)
