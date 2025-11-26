@@ -194,6 +194,7 @@ func TestFloatComparisons(t *testing.T) {
 
 func TestFloatPredicates(t *testing.T) {
 	ctx := NewContext(nil)
+	sort := ctx.Float32Sort()
 
 	// Test IsNormal
 	x := ctx.Float32FromFloat64(1.0)
@@ -254,7 +255,6 @@ func TestFloatPredicates(t *testing.T) {
 
 func TestFloatConversions(t *testing.T) {
 	ctx := NewContext(nil)
-	sort32 := ctx.Float32Sort() // float32
 	sort64 := ctx.Float64Sort() // float64
 
 	// ToFloat (different precision)
@@ -297,6 +297,7 @@ func TestFloatConversions(t *testing.T) {
 
 func TestFloatNaN(t *testing.T) {
 	ctx := NewContext(nil)
+	sort := ctx.Float32Sort()
 	nan := ctx.FloatNaN(sort)
 
 	solver := NewSolver(ctx)
@@ -308,6 +309,7 @@ func TestFloatNaN(t *testing.T) {
 
 func TestFloatInf(t *testing.T) {
 	ctx := NewContext(nil)
+	sort := ctx.Float32Sort()
 	posInf := ctx.FloatInf(sort, false)
 	negInf := ctx.FloatInf(sort, true)
 
@@ -339,6 +341,7 @@ func TestFromFloat32(t *testing.T) {
 
 func TestBVToFloat(t *testing.T) {
 	ctx := NewContext(nil)
+	sort := ctx.Float32Sort()
 
 	// IEEEToFloat
 	bv := ctx.FromInt(0x3FC00000, ctx.BVSort(32)).(BV) // 1.5 in IEEE 754
