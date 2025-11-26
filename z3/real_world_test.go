@@ -43,11 +43,11 @@ func TestRabbitsAndPheasants(t *testing.T) {
 	}
 
 	model := solver.Model()
-	rabbitsVal, _, ok := model.Eval(rabbits, true).(Int).AsInt64()
+	rabbitsVal, _, ok := model.EvalAsInt64(rabbits, true)
 	if !ok {
 		t.Fatal("could not evaluate rabbits")
 	}
-	pheasantsVal, _, ok := model.Eval(pheasants, true).(Int).AsInt64()
+	pheasantsVal, _, ok := model.EvalAsInt64(pheasants, true)
 	if !ok {
 		t.Fatal("could not evaluate pheasants")
 	}
@@ -99,11 +99,11 @@ func TestRabbitsAndPheasantsWithOr(t *testing.T) {
 	}
 
 	model := solver.Model()
-	rabbitsVal, _, ok := model.Eval(rabbits, true).(Int).AsInt64()
+	rabbitsVal, _, ok := model.EvalAsInt64(rabbits, true)
 	if !ok {
 		t.Fatal("could not evaluate rabbits")
 	}
-	pheasantsVal, _, ok := model.Eval(pheasants, true).(Int).AsInt64()
+	pheasantsVal, _, ok := model.EvalAsInt64(pheasants, true)
 	if !ok {
 		t.Fatal("could not evaluate pheasants")
 	}
@@ -183,7 +183,7 @@ func TestXKCD287(t *testing.T) {
 		t.Logf("Solution %d:", solutions)
 		var blocking []Bool
 		for i, name := range appetizers {
-			qtyVal, _, ok := model.Eval(quantities[i], true).(Int).AsInt64()
+			qtyVal, _, ok := model.EvalAsInt64(quantities[i], true)
 			if !ok {
 				t.Fatalf("could not evaluate %s", name)
 			}
@@ -345,16 +345,16 @@ func TestEinsteinRiddle(t *testing.T) {
 	model := solver.Model()
 
 	// Find who drinks water
-	waterHouse, _, _ := model.Eval(water, true).(Int).AsInt64()
+	waterHouse, _, _ := model.EvalAsInt64(water, true)
 
 	// Find who owns the zebra
-	zebraHouse, _, _ := model.Eval(zebra, true).(Int).AsInt64()
+	zebraHouse, _, _ := model.EvalAsInt64(zebra, true)
 
 	// Find the nationalities in those houses
 	var waterDrinker, zebraOwner string
 	nationalityNames := []string{"Englishman", "Spaniard", "Ukrainian", "Norwegian", "Japanese"}
 	for i, nat := range nationalities {
-		house, _, _ := model.Eval(nat, true).(Int).AsInt64()
+		house, _, _ := model.EvalAsInt64(nat, true)
 		if house == waterHouse {
 			waterDrinker = nationalityNames[i]
 		}
@@ -451,9 +451,9 @@ func TestSkisAssignment(t *testing.T) {
 	t.Logf("Minimum total disparity: %s", obj.Lower())
 
 	for i, height := range skierHeights {
-		assignVal, _, _ := model.Eval(assignments[i], true).(Int).AsInt64()
+		assignVal, _, _ := model.EvalAsInt64(assignments[i], true)
 		skiSize := skiSizes[assignVal]
-		dispVal, _, _ := model.Eval(disparities[i], true).(Int).AsInt64()
+		dispVal, _, _ := model.EvalAsInt64(disparities[i], true)
 		t.Logf("Skier %d (height %d) gets ski of size %d (disparity: %d)", i, height, skiSize, dispVal)
 	}
 }
@@ -543,17 +543,17 @@ func TestOrganizeYourDay(t *testing.T) {
 	t.Log("Schedule:")
 	for i := range tasks {
 		task := &tasks[i]
-		startVal, _, _ := model.Eval(tasks[i], true).(Int).AsInt64()
+		startVal, _, _ := model.EvalAsInt64(tasks[i], true)
 		duration := durations[task]
 		name := taskNames[task]
 		t.Logf("  %s: %d:00 - %d:00 (%d hour(s))", name, startVal, startVal+duration, duration)
 	}
 
 	// Verify constraints
-	workVal, _, _ := model.Eval(workStart, true).(Int).AsInt64()
-	mailVal, _, _ := model.Eval(mailStart, true).(Int).AsInt64()
-	bankVal, _, _ := model.Eval(bankStart, true).(Int).AsInt64()
-	shoppingVal, _, _ := model.Eval(shoppingStart, true).(Int).AsInt64()
+	workVal, _, _ := model.EvalAsInt64(workStart, true)
+	mailVal, _, _ := model.EvalAsInt64(mailStart, true)
+	bankVal, _, _ := model.EvalAsInt64(bankStart, true)
+	shoppingVal, _, _ := model.EvalAsInt64(shoppingStart, true)
 
 	if workVal < 11 {
 		t.Fatalf("work should start after 11, got %d", workVal)
@@ -660,7 +660,7 @@ func TestSudoku(t *testing.T) {
 	for i := 0; i < 9; i++ {
 		row := ""
 		for j := 0; j < 9; j++ {
-			val, _, _ := model.Eval(cells[i][j], true).(Int).AsInt64()
+			val, _, _ := model.EvalAsInt64(cells[i][j], true)
 			row += string(rune('0' + val))
 			if j == 2 || j == 5 {
 				row += "|"
@@ -723,7 +723,7 @@ func TestNQueens(t *testing.T) {
 
 	t.Logf("%d-Queens solution:", n)
 	for i := 0; i < n; i++ {
-		col, _, _ := model.Eval(queens[i], true).(Int).AsInt64()
+		col, _, _ := model.EvalAsInt64(queens[i], true)
 		row := ""
 		for j := 0; j < n; j++ {
 			if int64(j) == col {
@@ -816,7 +816,7 @@ func TestMagicSquare(t *testing.T) {
 	for i := 0; i < n; i++ {
 		row := ""
 		for j := 0; j < n; j++ {
-			val, _, _ := model.Eval(cells[i][j], true).(Int).AsInt64()
+			val, _, _ := model.EvalAsInt64(cells[i][j], true)
 			row += string(rune('0'+val)) + " "
 		}
 		t.Log(row)
@@ -864,7 +864,7 @@ func TestGraphColoring(t *testing.T) {
 	colorNames := []string{"Red", "Green", "Blue"}
 	t.Log("Graph coloring solution:")
 	for i := 0; i < numVertices; i++ {
-		colorVal, _, _ := model.Eval(colors[i], true).(Int).AsInt64()
+		colorVal, _, _ := model.EvalAsInt64(colors[i], true)
 		t.Logf("  Vertex %d: %s", i, colorNames[colorVal])
 	}
 }
@@ -930,7 +930,7 @@ func TestKnapsack(t *testing.T) {
 	totalWeight := int64(0)
 	t.Log("Selected items:")
 	for i := range items {
-		takeVal, _, _ := model.Eval(take[i], true).(Int).AsInt64()
+		takeVal, _, _ := model.EvalAsInt64(take[i], true)
 		if takeVal == 1 {
 			t.Logf("  %s (weight: %d, value: %d)", items[i].name, items[i].weight, items[i].value)
 			totalWeight += items[i].weight
@@ -1003,14 +1003,14 @@ func TestSendMoreMoney(t *testing.T) {
 
 	model := solver.Model()
 
-	sVal, _, _ := model.Eval(s, true).(Int).AsInt64()
-	eVal, _, _ := model.Eval(e, true).(Int).AsInt64()
-	nVal, _, _ := model.Eval(n, true).(Int).AsInt64()
-	dVal, _, _ := model.Eval(d, true).(Int).AsInt64()
-	mVal, _, _ := model.Eval(m, true).(Int).AsInt64()
-	oVal, _, _ := model.Eval(o, true).(Int).AsInt64()
-	rVal, _, _ := model.Eval(r, true).(Int).AsInt64()
-	yVal, _, _ := model.Eval(y, true).(Int).AsInt64()
+	sVal, _, _ := model.EvalAsInt64(s, true)
+	eVal, _, _ := model.EvalAsInt64(e, true)
+	nVal, _, _ := model.EvalAsInt64(n, true)
+	dVal, _, _ := model.EvalAsInt64(d, true)
+	mVal, _, _ := model.EvalAsInt64(m, true)
+	oVal, _, _ := model.EvalAsInt64(o, true)
+	rVal, _, _ := model.EvalAsInt64(r, true)
+	yVal, _, _ := model.EvalAsInt64(y, true)
 
 	sendNum := sVal*1000 + eVal*100 + nVal*10 + dVal
 	moreNum := mVal*1000 + oVal*100 + rVal*10 + eVal

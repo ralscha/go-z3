@@ -75,6 +75,22 @@ func (m *Model) String() string {
 	return res
 }
 
+// EvalAsInt64 evaluates val and returns its value as an int64.
+// This is a convenience method that combines Eval with type assertion and AsInt64.
+// It returns the value, whether the result is a literal, and whether the conversion was successful.
+// If val cannot be evaluated or is not an Int, it returns 0, false, false.
+func (m *Model) EvalAsInt64(val Value, completion bool) (int64, bool, bool) {
+	result := m.Eval(val, completion)
+	if result == nil {
+		return 0, false, false
+	}
+	intVal, ok := result.(Int)
+	if !ok {
+		return 0, false, false
+	}
+	return intVal.AsInt64()
+}
+
 // Sorts returns the uninterpreted sorts that m assigns an
 // interpretation to.
 //
