@@ -478,18 +478,8 @@ func TestOrganizeYourDay(t *testing.T) {
 	shoppingStart := ctx.IntConst("shopping_start")
 
 	tasks := []Int{workStart, mailStart, bankStart, shoppingStart}
-	durations := map[*Int]int64{
-		&workStart:     4,
-		&mailStart:     1,
-		&bankStart:     2,
-		&shoppingStart: 1,
-	}
-	taskNames := map[*Int]string{
-		&workStart:     "work",
-		&mailStart:     "mail",
-		&bankStart:     "bank",
-		&shoppingStart: "shopping",
-	}
+	durations := []int64{4, 1, 2, 1}
+	taskNames := []string{"work", "mail", "bank", "shopping"}
 
 	nine := ctx.Int(9)
 	eleven := ctx.Int(11)
@@ -497,9 +487,7 @@ func TestOrganizeYourDay(t *testing.T) {
 
 	// Each task must start after 9 and finish by 17
 	for i := range tasks {
-		task := &tasks[i]
-		duration := durations[task]
-		durationVal := ctx.Int64(duration)
+		durationVal := ctx.Int64(durations[i])
 		solver.Assert(tasks[i].GE(nine))
 		solver.Assert(tasks[i].Add(durationVal).LE(seventeen))
 	}
@@ -507,10 +495,8 @@ func TestOrganizeYourDay(t *testing.T) {
 	// No overlap: for any two tasks, one must finish before the other starts
 	for i := 0; i < len(tasks); i++ {
 		for j := i + 1; j < len(tasks); j++ {
-			task1 := &tasks[i]
-			task2 := &tasks[j]
-			duration1 := ctx.Int64(durations[task1])
-			duration2 := ctx.Int64(durations[task2])
+			duration1 := ctx.Int64(durations[i])
+			duration2 := ctx.Int64(durations[j])
 			// task1 finishes before task2 starts OR task2 finishes before task1 starts
 			solver.Assert(
 				tasks[i].Add(duration1).LE(tasks[j]).Or(
@@ -542,10 +528,9 @@ func TestOrganizeYourDay(t *testing.T) {
 
 	t.Log("Schedule:")
 	for i := range tasks {
-		task := &tasks[i]
 		startVal, _, _ := model.EvalAsInt64(tasks[i], true)
-		duration := durations[task]
-		name := taskNames[task]
+		duration := durations[i]
+		name := taskNames[i]
 		t.Logf("  %s: %d:00 - %d:00 (%d hour(s))", name, startVal, startVal+duration, duration)
 	}
 
