@@ -1008,3 +1008,158 @@ func TestSendMoreMoney(t *testing.T) {
 		t.Fatalf("expected SEND + MORE = MONEY, got %d + %d = %d", sendNum, moreNum, moneyNum)
 	}
 }
+
+// TestBuildingAHouse solves a simple scheduling problem for building a house.
+// Tasks like masonry, roofing, painting, etc. must be scheduled with precedence constraints.
+// The goal is to minimize the makespan (total time to complete all tasks).
+// Based on: https://www.hakank.org/z3/building_a_house.py
+// Originally adapted from OPL model sched_intro.mod
+//
+// Expected OPL solution:
+//
+//	Masonry  : 0..35
+//	Carpentry: 35..50
+//	Plumbing : 35..75
+//	Ceiling  : 35..50
+//	Roofing  : 50..55
+//	Painting : 50..60
+//	Windows  : 55..60
+//	Facade   : 75..85
+//	Garden   : 75..80
+//	Moving   : 85..90
+func TestBuildingAHouse(t *testing.T) {
+	ctx := NewContext(nil)
+	opt := NewOptimize(ctx)
+
+	// Task indices
+	const (
+		masonry = iota
+		carpentry
+		plumbing
+		ceiling
+		roofing
+		painting
+		windows
+		facade
+		garden
+		moving
+		numTasks
+	)
+
+	taskNames := []string{
+		"masonry", "carpentry", "plumbing", "ceiling", "roofing",
+		"painting", "windows", "facade", "garden", "moving",
+	}
+
+	// Duration of each task
+	durations := []int64{35, 15, 40, 15, 5, 10, 5, 10, 5, 5}
+
+	// Calculate total duration (upper bound for scheduling)
+	var totalDuration int64
+	for _, d := range durations {
+		totalDuration += d
+	}
+
+	zero := ctx.Int(0)
+	totalDurVal := ctx.Int64(totalDuration)
+
+	// Create start and end time variables for each task
+	start := make([]Int, numTasks)
+	end := make([]Int, numTasks)
+	for i := 0; i < numTasks; i++ {
+		start[i] = ctx.IntConst("start_" + taskNames[i])
+		end[i] = ctx.IntConst("end_" + taskNames[i])
+
+		// Start times must be non-negative and within total duration
+		opt.Assert(start[i].GE(zero))
+		opt.Assert(start[i].LE(totalDurVal))
+
+		// End times must be within total duration
+		opt.Assert(end[i].GE(zero))
+		opt.Assert(end[i].LE(totalDurVal))
+
+		// end[i] = start[i] + duration[i]
+		opt.Assert(end[i].Eq(start[i].Add(ctx.Int64(durations[i]))))
+	}
+
+	// Makespan: the end time of the last task
+	makespan := ctx.IntConst("makespan")
+	opt.Assert(makespan.GE(zero))
+	opt.Assert(makespan.LE(totalDurVal))
+
+	// Makespan must be >= all end times
+	for i := 0; i < numTasks; i++ {
+		opt.Assert(makespan.GE(end[i]))
+	}
+
+	// Precedence constraints: task x must be finished before task y begins
+	// prec(x, y) means: start[x] + duration[x] <= start[y]
+	precedences := [][2]int{
+		{masonry, carpentry},
+		{masonry, plumbing},
+		{masonry, ceiling},
+		{carpentry, roofing},
+		{ceiling, painting},
+		{roofing, windows},
+		{roofing, facade},
+		{plumbing, facade},
+		{roofing, garden},
+		{plumbing, garden},
+		{windows, moving},
+		{facade, moving},
+		{garden, moving},
+		{painting, moving},
+	}
+
+	for _, prec := range precedences {
+		x, y := prec[0], prec[1]
+		// start[x] + duration[x] <= start[y]
+		opt.Assert(start[x].Add(ctx.Int64(durations[x])).LE(start[y]))
+	}
+
+	// Minimize makespan
+	obj := opt.Minimize(makespan)
+
+	sat, err := opt.Check()
+	if err != nil {
+		t.Fatalf("error: %s", err)
+	}
+	if !sat {
+		t.Fatal("expected satisfiable")
+	}
+
+	model := opt.Model()
+	t.Logf("Minimum makespan: %s", obj.Lower())
+
+	t.Log("\nSchedule:")
+	for i := 0; i < numTasks; i++ {
+		startVal, _, _ := model.EvalAsInt64(start[i], true)
+		endVal, _, _ := model.EvalAsInt64(end[i], true)
+		t.Logf("  %-10s: %3d -- (%2d) --> %3d", taskNames[i], startVal, durations[i], endVal)
+	}
+
+	// Verify the solution
+	makespanVal, _, _ := model.EvalAsInt64(makespan, true)
+
+	// The optimal makespan should be 90 (based on the OPL solution)
+	if makespanVal != 90 {
+		t.Fatalf("expected makespan of 90, got %d", makespanVal)
+	}
+
+	// Verify all precedence constraints
+	for _, prec := range precedences {
+		x, y := prec[0], prec[1]
+		xEnd, _, _ := model.EvalAsInt64(end[x], true)
+		yStart, _, _ := model.EvalAsInt64(start[y], true)
+		if xEnd > yStart {
+			t.Fatalf("precedence violated: %s (ends at %d) should finish before %s (starts at %d)",
+				taskNames[x], xEnd, taskNames[y], yStart)
+		}
+	}
+
+	// Verify moving task ends at makespan (it's the last task)
+	movingEnd, _, _ := model.EvalAsInt64(end[moving], true)
+	if movingEnd != makespanVal {
+		t.Fatalf("expected moving to end at makespan %d, but it ends at %d", makespanVal, movingEnd)
+	}
+}
